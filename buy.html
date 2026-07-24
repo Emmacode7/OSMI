@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Buy Sqm — One Square Meter Initiative</title>
+<link rel="icon" href="assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Leisure Court" />
+      <span class="brand-text">
+        <span class="line1">Leisure Court</span>
+        <span class="line2">One Square Meter Initiative</span>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="buy.html" class="active">Buy</a>
+      <a href="sell.html">Sell Back</a>
+      <a href="check-plot.html">Check Plot</a>
+      <a href="about.html">About &amp; Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section-tight">
+  <div class="container" style="max-width:520px;">
+    <div class="section-label">Buy sqm</div>
+    <h2 class="section-title">Buy sqm &amp; pay now</h2>
+    <p style="color:var(--ink-dim); font-size:14px; margin-top:-6px; margin-bottom:20px;">Secure checkout powered by Paystack — pay by card, bank transfer, or USSD.</p>
+
+    <div class="panel">
+      <label for="buyerName">Full name</label>
+      <input id="buyerName" type="text" placeholder="e.g. A. Balogun" />
+
+      <label for="buyerPhone">Phone number</label>
+      <input id="buyerPhone" type="tel" placeholder="e.g. 08012345678" />
+
+      <label for="buyerEmail">Email</label>
+      <input id="buyerEmail" type="email" placeholder="you@example.com" />
+
+      <label for="plotSelect">Plot</label>
+      <select id="plotSelect"><option value="">Loading plots…</option></select>
+
+      <label for="sqmInput">Sqm to buy</label>
+      <input id="sqmInput" type="number" min="5" placeholder="5" />
+
+      <div class="total-box">
+        <span class="lbl">Total</span>
+        <span class="amt" id="totalDisplay">—</span>
+      </div>
+
+      <button id="payBtn" class="btn-block" type="button">Pay Now</button>
+      <div class="hint" id="availabilityHint"></div>
+      <div class="status" id="statusBox"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 Leisure Court — Excellent Housing Solutions</span>
+    <div class="footer-links">
+      <a href="about.html">About &amp; Contact</a>
+      <a href="check-plot.html">Check Your Plot</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site-config.js"></script>
+<script src="js/site-api.js"></script>
+<script src="js/site-nav.js"></script>
+<script>
+(function(){
+  let plots = [];
+  const el = (id) => document.getElementById(id);
+
+  function showStatus(kind, text){
+    const box = el('statusBox');
+    box.className = 'status show ' + kind;
+    box.textContent = text;
+  }
+  function clearStatus(){
+    const box = el('statusBox');
+    box.className = 'status';
+    box.textContent = '';
+  }
+  function formatNaira(n){ return '₦' + Number(n).toLocaleString('en-NG'); }
+
+  function selectedPlot(){
+    const name = el('plotSelect').value;
+    return plots.find(p => p.name === name);
+  }
+
+  function updateTotalPreview(){
+    const plot = selectedPlot();
+    const sqm = Number(el('sqmInput').value);
+    if (!plot || !sqm || sqm < 5){
+      el('totalDisplay').textContent = '—';
+      return;
+    }
+    el('totalDisplay').textContent = formatNaira(plot.pricePerSqm * sqm);
+  }
+
+  function updateAvailabilityHint(){
+    const plot = selectedPlot();
+    el('availabilityHint').textContent = plot
+      ? plot.availableSqm + ' sqm available on this plot. Minimum purchase is 5 sqm.'
+      : 'Minimum purchase is 5 sqm.';
+  }
+
+  el('plotSelect').addEventListener('change', () => { updateAvailabilityHint(); updateTotalPreview(); });
+  el('sqmInput').addEventListener('input', updateTotalPreview);
+
+  function generateReference(){
+    return 'osmi_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+  }
+
+  el('payBtn').addEventListener('click', async () => {
+    clearStatus();
+    const buyerName = el('buyerName').value.trim();
+    const buyerPhone = el('buyerPhone').value.trim();
+    const buyerEmail = el('buyerEmail').value.trim();
+    const plotName = el('plotSelect').value;
+    const sqm = Number(el('sqmInput').value);
+
+    if (!buyerName || !buyerPhone || !buyerEmail || !plotName){
+      showStatus('error', 'Please fill in all fields.');
+      return;
+    }
+    if (!sqm || sqm < 5){
+      showStatus('error', 'Minimum purchase is 5 sqm.');
+      return;
+    }
+
+    el('payBtn').disabled = true;
+    showStatus('pending', 'Preparing checkout…');
+
+    try {
+      const checkout = await OsmiApi.initiateCheckout(plotName, sqm);
+      if (checkout.error){
+        el('payBtn').disabled = false;
+        showStatus('error', checkout.error);
+        return;
+      }
+      launchPaystack(checkout, { buyerName, buyerPhone, buyerEmail, plotName, sqm });
+    } catch (err) {
+      el('payBtn').disabled = false;
+      showStatus('error', 'Could not start checkout. Please try again.');
+    }
+  });
+
+  function launchPaystack(checkout, buyerInfo){
+    showStatus('pending', 'Opening secure payment window…');
+    const reference = generateReference();
+
+    const handler = PaystackPop.setup({
+      key: OSMI_CONFIG.PAYSTACK_PUBLIC_KEY,
+      email: buyerInfo.buyerEmail,
+      amount: checkout.totalAmountKobo,
+      currency: OSMI_CONFIG.CURRENCY,
+      ref: reference,
+      metadata: {
+        buyerName: buyerInfo.buyerName,
+        buyerPhone: buyerInfo.buyerPhone,
+        buyerEmail: buyerInfo.buyerEmail,
+        plotName: buyerInfo.plotName,
+        sqm: buyerInfo.sqm,
+        pricePerSqm: checkout.pricePerSqm
+      },
+      callback: function(response){
+        showStatus('pending', 'Payment received — confirming your allocation…');
+        OsmiApi.completePurchase({
+          buyerName: buyerInfo.buyerName,
+          buyerPhone: buyerInfo.buyerPhone,
+          buyerEmail: buyerInfo.buyerEmail,
+          plotName: buyerInfo.plotName,
+          sqm: buyerInfo.sqm,
+          pricePerSqm: checkout.pricePerSqm,
+          reference: response.reference
+        }).then(function(result){
+          el('payBtn').disabled = false;
+          if (result.success){
+            showStatus('ok', result.message || 'Success! Check your email for your certificate.');
+          } else {
+            showStatus('error', result.message || 'There was a problem completing your allocation.');
+          }
+        }).catch(function(err){
+          el('payBtn').disabled = false;
+          showStatus('error', 'Payment was received (reference ' + response.reference + ') but confirming it failed. Please contact us with this reference.');
+        });
+      },
+      onClose: function(){
+        el('payBtn').disabled = false;
+        showStatus('error', 'Payment window closed before completing payment.');
+      }
+    });
+    handler.openIframe();
+  }
+
+  OsmiApi.getPlotsForCheckout().then(function(list){
+    plots = list || [];
+    const select = el('plotSelect');
+    select.innerHTML = '';
+    if (plots.length === 0){
+      select.innerHTML = '<option value="">No plots available</option>';
+      return;
+    }
+    plots.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.name;
+      opt.textContent = p.name + ' — ' + formatNaira(p.pricePerSqm) + '/sqm (' + p.availableSqm + ' sqm left)';
+      select.appendChild(opt);
+    });
+    updateAvailabilityHint();
+    updateTotalPreview();
+  }).catch(function(){
+    el('plotSelect').innerHTML = '<option value="">Could not load plots</option>';
+  });
+})();
+</script>
+</body>
+</html>

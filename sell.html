@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sell Back Sqm — One Square Meter Initiative</title>
+    <link rel="icon" href="assets/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          <img src="assets/logo.png" alt="Leisure Court" />
+          <span class="brand-text">
+            <span class="line1">Leisure Court</span>
+            <span class="line2">One Square Meter Initiative</span>
+          </span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          ☰
+        </button>
+        <nav class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="buy.html">Buy</a>
+          <a href="sell.html" class="active">Sell Back</a>
+          <a href="check-plot.html">Check Plot</a>
+          <a href="about.html">About &amp; Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section-tight">
+      <div class="container" style="max-width: 520px">
+        <div class="section-label">Sell back</div>
+        <h2 class="section-title">Sell back sqm</h2>
+        <p
+          style="
+            color: var(--ink-dim);
+            font-size: 14px;
+            margin-top: -6px;
+            margin-bottom: 20px;
+          "
+        >
+          We'll pay out at today's rate per sqm, not what you originally paid.
+          Our staff will process the transfer to the account below.
+        </p>
+
+        <div class="panel">
+          <label for="buyerEmail">Your email (the one used to buy)</label>
+          <input id="buyerEmail" type="email" placeholder="you@example.com" />
+
+          <label for="plotSelect">Plot</label>
+          <select id="plotSelect">
+            <option value="">Loading plots…</option>
+          </select>
+
+          <label for="sqmInput">Sqm to sell back</label>
+          <input id="sqmInput" type="number" min="1" placeholder="e.g. 20" />
+
+          <hr class="section-divider" />
+          <div class="section-sublabel">Payout bank details</div>
+
+          <label for="bankName">Bank name</label>
+          <input id="bankName" type="text" placeholder="e.g. GTBank" />
+
+          <label for="accountNumber">Account number</label>
+          <input id="accountNumber" type="text" placeholder="e.g. 0123456789" />
+
+          <label for="accountName">Account name</label>
+          <input
+            id="accountName"
+            type="text"
+            placeholder="Name on the account"
+          />
+
+          <button id="submitBtn" class="btn-block" type="button">
+            Submit sell-back request
+          </button>
+          <div class="hint">
+            This doesn't move any money automatically — our staff review every
+            request and send the payout to the account above.
+          </div>
+          <div class="status" id="statusBox"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2026 Leisure Court — Excellent Housing Solutions</span>
+        <div class="footer-links">
+          <a href="about.html">About &amp; Contact</a>
+          <a href="check-plot.html">Check Your Plot</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/site-config.js"></script>
+    <script src="js/site-api.js"></script>
+    <script src="js/site-nav.js"></script>
+    <script>
+      (function () {
+        const el = (id) => document.getElementById(id);
+
+        function showStatus(kind, text) {
+          const box = el("statusBox");
+          box.className = "status show " + kind;
+          box.textContent = text;
+        }
+        function clearStatus() {
+          const box = el("statusBox");
+          box.className = "status";
+          box.textContent = "";
+        }
+        function formatNaira(n) {
+          return "₦" + Number(n).toLocaleString("en-NG");
+        }
+
+        OsmiApi.getPlotsForCheckout()
+          .then(function (list) {
+            const select = el("plotSelect");
+            select.innerHTML = "";
+            if (!list || list.length === 0) {
+              select.innerHTML = '<option value="">No plots available</option>';
+              return;
+            }
+            list.forEach((p) => {
+              const opt = document.createElement("option");
+              opt.value = p.name;
+              opt.textContent = p.name;
+              select.appendChild(opt);
+            });
+          })
+          .catch(function () {
+            el("plotSelect").innerHTML =
+              '<option value="">Could not load plots</option>';
+          });
+
+        el("submitBtn").addEventListener("click", async () => {
+          clearStatus();
+          const buyerEmail = el("buyerEmail").value.trim();
+          const plotName = el("plotSelect").value;
+          const sqmToSellBack = Number(el("sqmInput").value);
+          const bankName = el("bankName").value.trim();
+          const accountNumber = el("accountNumber").value.trim();
+          const accountName = el("accountName").value.trim();
+
+          if (
+            !buyerEmail ||
+            !plotName ||
+            !bankName ||
+            !accountNumber ||
+            !accountName
+          ) {
+            showStatus("error", "Please fill in all fields.");
+            return;
+          }
+          if (!sqmToSellBack || sqmToSellBack <= 0) {
+            showStatus("error", "Enter a valid sqm amount.");
+            return;
+          }
+
+          el("submitBtn").disabled = true;
+          showStatus("pending", "Submitting your request…");
+
+          try {
+            const result = await OsmiApi.submitSellback({
+              buyerEmail,
+              plotName,
+              sqmToSellBack,
+              bankName,
+              accountNumber,
+              accountName,
+            });
+            el("submitBtn").disabled = false;
+            if (result && result.success) {
+              showStatus(
+                "ok",
+                "Request recorded (reference " +
+                  result.buybackId +
+                  "). At today\u2019s rate, that\u2019s worth " +
+                  formatNaira(result.totalPayout) +
+                  ". Check your email for confirmation \u2014 our staff will process your payout shortly.",
+              );
+            } else {
+              showStatus(
+                "error",
+                result && result.reason
+                  ? result.reason
+                  : (result && result.message) ||
+                      "We could not process this request. Please check the details and try again.",
+              );
+            }
+          } catch (err) {
+            el("submitBtn").disabled = false;
+            showStatus("error", "Something went wrong. Please try again.");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
