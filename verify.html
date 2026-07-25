@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verify Email — One Square Meter Initiative</title>
+<link rel="icon" href="assets/osmi-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="index.html">
+        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      </a>
+      <div class="powered-by">
+        <div>
+          <div class="pb-label">Powered by</div>
+          <div class="pb-brand">
+            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+            <span class="pb-name font-anton">LEISURE COURT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a href="sell.html">Sell Back</a>
+      <a href="about.html">About &amp; Contact</a>
+      <a href="login.html" class="auth-logged-out">Log In</a>
+      <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
+      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
+      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section-tight">
+  <div class="container auth-shell">
+    <div class="section-label" style="text-align:center;">Email verification</div>
+    <h2 class="section-title" style="text-align:center;" id="pageTitle">Verifying your email…</h2>
+
+    <div class="panel" style="text-align:center;">
+      <div class="status show pending" id="statusBox">Checking your link…</div>
+      <a href="dashboard.html" class="btn btn-primary" id="continueBtn" style="margin-top:16px; display:none;">Go to My Plots</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">About &amp; Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site-nav.js"></script>
+<script src="js/site-config.js"></script>
+<script src="js/site-api.js"></script>
+<script src="js/site-auth.js"></script>
+<script>
+(function(){
+  const el = (id) => document.getElementById(id);
+
+  function showStatus(kind, text){
+    const box = el('statusBox');
+    box.className = 'status show ' + kind;
+    box.textContent = text;
+  }
+
+  async function run(){
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (!token){
+      el('pageTitle').textContent = 'Missing verification link';
+      showStatus('error', 'This page needs a verification link — please use the link from your email.');
+      return;
+    }
+
+    try{
+      const result = await OsmiApi.verifyEmail(token);
+      if (result.success){
+        el('pageTitle').textContent = 'Email verified!';
+        showStatus('ok', result.message || 'Your email is verified.');
+        // Refresh the cached buyer so the "verified" state shows immediately if already logged in here.
+        if (OsmiAuth.isLoggedIn()){
+          await OsmiAuth.refreshBuyer();
+        }
+        el('continueBtn').style.display = 'inline-flex';
+      } else {
+        el('pageTitle').textContent = 'Could not verify';
+        showStatus('error', result.message || 'This link is invalid or has already been used.');
+      }
+    } catch (err){
+      el('pageTitle').textContent = 'Something went wrong';
+      showStatus('error', 'Could not reach the server. Please try again.');
+    }
+  }
+
+  run();
+})();
+</script>
+</body>
+</html>

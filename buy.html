@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Buy Sqm — One Square Meter Initiative</title>
-<link rel="icon" href="assets/logo.png" />
+<link rel="icon" href="assets/osmi-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
@@ -14,20 +14,30 @@
 
 <header class="site-header">
   <div class="nav-inner">
-    <a class="brand" href="index.html">
-      <img src="assets/logo.png" alt="Leisure Court" />
-      <span class="brand-text">
-        <span class="line1">Leisure Court</span>
-        <span class="line2">One Square Meter Initiative</span>
-      </span>
-    </a>
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="index.html">
+        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      </a>
+      <div class="powered-by">
+        <div>
+          <div class="pb-label">Powered by</div>
+          <div class="pb-brand">
+            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+            <span class="pb-name font-anton">LEISURE COURT</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="buy.html" class="active">Buy</a>
       <a href="sell.html">Sell Back</a>
-      <a href="check-plot.html">Check Plot</a>
       <a href="about.html">About &amp; Contact</a>
+      <a href="login.html" class="auth-logged-out">Log In</a>
+      <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
+      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
+      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
     </nav>
   </div>
 </header>
@@ -39,15 +49,13 @@
     <p style="color:var(--ink-dim); font-size:14px; margin-top:-6px; margin-bottom:20px;">Secure checkout powered by Paystack — pay by card, bank transfer, or USSD.</p>
 
     <div class="panel">
-      <label for="buyerName">Full name</label>
-      <input id="buyerName" type="text" placeholder="e.g. A. Balogun" />
+      <div class="section-sublabel">Buying as</div>
+      <div id="buyerIdentity" class="mono" style="font-size:13.5px; color:var(--ink); margin-top:6px;">Loading…</div>
+    </div>
 
-      <label for="buyerPhone">Phone number</label>
-      <input id="buyerPhone" type="tel" placeholder="e.g. 08012345678" />
+    <div id="verifyBanner"></div>
 
-      <label for="buyerEmail">Email</label>
-      <input id="buyerEmail" type="email" placeholder="you@example.com" />
-
+    <div class="panel">
       <label for="plotSelect">Plot</label>
       <select id="plotSelect"><option value="">Loading plots…</option></select>
 
@@ -68,10 +76,13 @@
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <span>© 2026 Leisure Court — Excellent Housing Solutions</span>
+    <div class="footer-brand">
+      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
+    </div>
     <div class="footer-links">
       <a href="about.html">About &amp; Contact</a>
-      <a href="check-plot.html">Check Your Plot</a>
+      <a href="dashboard.html">My Plots</a>
     </div>
   </div>
 </footer>
@@ -79,10 +90,19 @@
 <script src="js/site-config.js"></script>
 <script src="js/site-api.js"></script>
 <script src="js/site-nav.js"></script>
+<script src="js/site-auth.js"></script>
 <script>
 (function(){
+  OsmiAuth.requireLogin();
+
   let plots = [];
   const el = (id) => document.getElementById(id);
+  const buyer = OsmiAuth.getBuyer();
+
+  if (buyer){
+    el('buyerIdentity').textContent = buyer.name + ' — ' + buyer.email + ' — ' + buyer.phone;
+  }
+  OsmiAuth.renderVerificationBanner('verifyBanner');
 
   function showStatus(kind, text){
     const box = el('statusBox');
@@ -127,14 +147,11 @@
 
   el('payBtn').addEventListener('click', async () => {
     clearStatus();
-    const buyerName = el('buyerName').value.trim();
-    const buyerPhone = el('buyerPhone').value.trim();
-    const buyerEmail = el('buyerEmail').value.trim();
     const plotName = el('plotSelect').value;
     const sqm = Number(el('sqmInput').value);
 
-    if (!buyerName || !buyerPhone || !buyerEmail || !plotName){
-      showStatus('error', 'Please fill in all fields.');
+    if (!plotName){
+      showStatus('error', 'Please choose a plot.');
       return;
     }
     if (!sqm || sqm < 5){
@@ -152,7 +169,7 @@
         showStatus('error', checkout.error);
         return;
       }
-      launchPaystack(checkout, { buyerName, buyerPhone, buyerEmail, plotName, sqm });
+      launchPaystack(checkout, { plotName, sqm });
     } catch (err) {
       el('payBtn').disabled = false;
       showStatus('error', 'Could not start checkout. Please try again.');
@@ -162,17 +179,17 @@
   function launchPaystack(checkout, buyerInfo){
     showStatus('pending', 'Opening secure payment window…');
     const reference = generateReference();
+    const token = OsmiAuth.getToken();
 
     const handler = PaystackPop.setup({
       key: OSMI_CONFIG.PAYSTACK_PUBLIC_KEY,
-      email: buyerInfo.buyerEmail,
+      email: buyer.email,
       amount: checkout.totalAmountKobo,
       currency: OSMI_CONFIG.CURRENCY,
       ref: reference,
       metadata: {
-        buyerName: buyerInfo.buyerName,
-        buyerPhone: buyerInfo.buyerPhone,
-        buyerEmail: buyerInfo.buyerEmail,
+        token: token,
+        buyerEmail: buyer.email,
         plotName: buyerInfo.plotName,
         sqm: buyerInfo.sqm,
         pricePerSqm: checkout.pricePerSqm
@@ -180,9 +197,7 @@
       callback: function(response){
         showStatus('pending', 'Payment received — confirming your allocation…');
         OsmiApi.completePurchase({
-          buyerName: buyerInfo.buyerName,
-          buyerPhone: buyerInfo.buyerPhone,
-          buyerEmail: buyerInfo.buyerEmail,
+          token: token,
           plotName: buyerInfo.plotName,
           sqm: buyerInfo.sqm,
           pricePerSqm: checkout.pricePerSqm,

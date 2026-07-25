@@ -46,5 +46,77 @@ const OsmiApi = {
       body: JSON.stringify(Object.assign({ action: 'submitSellback' }, payload))
     });
     return res.json();
+  },
+
+  async signUp(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'signUp' }, payload))
+    });
+    return res.json();
+  },
+
+  async logIn(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'logIn' }, payload))
+    });
+    return res.json();
+  },
+
+  async logOut(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'logOut', token: token })
+    });
+    return res.json();
+  },
+
+  async getMyPlots(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getMyPlots', token: token })
+    });
+    return res.json();
+  },
+
+  async verifyEmail(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'verifyEmail', token: token })
+    });
+    return res.json();
+  },
+
+  async resendVerification(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'resendVerification', token: token })
+    });
+    return res.json();
+  },
+
+  async requestPasswordReset(email) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'requestPasswordReset', email: email })
+    });
+    return res.json();
+  },
+
+  async resetPassword(token, newPassword) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'resetPassword', token: token, newPassword: newPassword })
+    });
+    return res.json();
+  },
+
+  async whoAmI(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'whoAmI', token: token })
+    });
+    return res.json();
   }
 };

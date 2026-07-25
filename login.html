@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log In — One Square Meter Initiative</title>
+<link rel="icon" href="assets/osmi-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="index.html">
+        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      </a>
+      <div class="powered-by">
+        <div>
+          <div class="pb-label">Powered by</div>
+          <div class="pb-brand">
+            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+            <span class="pb-name font-anton">LEISURE COURT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a href="sell.html">Sell Back</a>
+      <a href="about.html">About &amp; Contact</a>
+      <a href="login.html" class="auth-logged-out active">Log In</a>
+      <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
+      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
+      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section-tight">
+  <div class="container auth-shell">
+    <div class="section-label" style="text-align:center;">Welcome back</div>
+    <h2 class="section-title" style="text-align:center;">Log in to your account.</h2>
+
+    <div class="panel">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Your password" autocomplete="current-password" />
+      <div style="text-align:right; margin-top:8px;"><a href="forgot-password.html" style="font-size:12.5px; color:var(--ink-dim); text-decoration:none;">Forgot password?</a></div>
+
+      <button class="btn-block" id="loginBtn" type="button">Log In</button>
+      <div class="status" id="statusBox"></div>
+    </div>
+
+    <div class="auth-switch">New here? <a href="signup.html">Create an account</a></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">About &amp; Contact</a>
+      <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site-nav.js"></script>
+<script src="js/site-config.js"></script>
+<script src="js/site-api.js"></script>
+<script src="js/site-auth.js"></script>
+<script>
+(function(){
+  const el = (id) => document.getElementById(id);
+
+  function showStatus(kind, text){
+    const box = el('statusBox');
+    box.className = 'status show ' + kind;
+    box.textContent = text;
+  }
+
+  if (OsmiAuth.isLoggedIn()){
+    window.location.href = 'dashboard.html';
+  }
+
+  async function doLogin(){
+    const email = el('email').value.trim();
+    const password = el('password').value;
+
+    if (!email || !password){
+      showStatus('error', 'Enter your email and password.');
+      return;
+    }
+
+    el('loginBtn').disabled = true;
+    showStatus('pending', 'Logging in…');
+
+    try{
+      const result = await OsmiApi.logIn({ email, password });
+      if (result.success){
+        OsmiAuth.setSession(result.token, result.buyer);
+        showStatus('ok', 'Logged in! Redirecting…');
+        const params = new URLSearchParams(window.location.search);
+        const next = params.get('next') || 'dashboard.html';
+        setTimeout(() => { window.location.href = next; }, 500);
+      } else {
+        el('loginBtn').disabled = false;
+        showStatus('error', result.message || 'Incorrect email or password.');
+      }
+    } catch (err){
+      el('loginBtn').disabled = false;
+      showStatus('error', 'Something went wrong. Please try again.');
+    }
+  }
+
+  el('loginBtn').addEventListener('click', doLogin);
+  el('password').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+})();
+</script>
+</body>
+</html>

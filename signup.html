@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign Up — One Square Meter Initiative</title>
+<link rel="icon" href="assets/osmi-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="index.html">
+        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      </a>
+      <div class="powered-by">
+        <div>
+          <div class="pb-label">Powered by</div>
+          <div class="pb-brand">
+            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+            <span class="pb-name font-anton">LEISURE COURT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a href="sell.html">Sell Back</a>
+      <a href="about.html">About &amp; Contact</a>
+      <a href="login.html" class="auth-logged-out">Log In</a>
+      <a href="signup.html" class="auth-logged-out nav-cta active">Sign Up</a>
+      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
+      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
+    </nav>
+  </div>
+</header>
+
+<main class="section-tight">
+  <div class="container auth-shell">
+    <div class="section-label" style="text-align:center;">Create your account</div>
+    <h2 class="section-title" style="text-align:center;">Sign up to buy, sell back, or check your plots.</h2>
+
+    <div class="panel">
+      <label for="name">Full name</label>
+      <input id="name" type="text" placeholder="e.g. A. Balogun" autocomplete="name" />
+
+      <label for="phone">Phone number</label>
+      <input id="phone" type="tel" placeholder="e.g. 08012345678" autocomplete="tel" />
+
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+
+      <label for="confirmPassword">Confirm password</label>
+      <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" />
+
+      <button class="btn-block" id="signupBtn" type="button">Sign Up</button>
+      <div class="hint">If you've bought sqm before under this email, signing up connects your new password to that existing record — you won't lose anything.</div>
+      <div class="status" id="statusBox"></div>
+    </div>
+
+    <div class="auth-switch">Already have an account? <a href="login.html">Log in</a></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">About &amp; Contact</a>
+      <a href="login.html">Log In</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site-nav.js"></script>
+<script src="js/site-config.js"></script>
+<script src="js/site-api.js"></script>
+<script src="js/site-auth.js"></script>
+<script>
+(function(){
+  const el = (id) => document.getElementById(id);
+
+  function showStatus(kind, text){
+    const box = el('statusBox');
+    box.className = 'status show ' + kind;
+    box.textContent = text;
+  }
+
+  // If already logged in, no reason to be here.
+  if (OsmiAuth.isLoggedIn()){
+    window.location.href = 'dashboard.html';
+  }
+
+  el('signupBtn').addEventListener('click', async () => {
+    const name = el('name').value.trim();
+    const phone = el('phone').value.trim();
+    const email = el('email').value.trim();
+    const password = el('password').value;
+    const confirmPassword = el('confirmPassword').value;
+
+    if (!name || !phone || !email || !password || !confirmPassword){
+      showStatus('error', 'Please fill in all fields.');
+      return;
+    }
+    if (password.length < 6){
+      showStatus('error', 'Password must be at least 6 characters.');
+      return;
+    }
+    if (password !== confirmPassword){
+      showStatus('error', 'Passwords do not match.');
+      return;
+    }
+
+    el('signupBtn').disabled = true;
+    showStatus('pending', 'Creating your account…');
+
+    try{
+      const result = await OsmiApi.signUp({ name, phone, email, password });
+      if (result.success){
+        OsmiAuth.setSession(result.token, result.buyer);
+        showStatus('ok', 'Account created! Check your email to verify it. Redirecting…');
+        const params = new URLSearchParams(window.location.search);
+        const next = params.get('next') || 'dashboard.html';
+        setTimeout(() => { window.location.href = next; }, 600);
+      } else {
+        el('signupBtn').disabled = false;
+        showStatus('error', result.message || 'Could not create your account. Please try again.');
+      }
+    } catch (err){
+      el('signupBtn').disabled = false;
+      showStatus('error', 'Something went wrong. Please try again.');
+    }
+  });
+})();
+</script>
+</body>
+</html>
