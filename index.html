@@ -36,8 +36,16 @@
       <a href="about.html">About &amp; Contact</a>
       <a href="login.html" class="auth-logged-out">Log In</a>
       <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
-      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
-      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
+      <div class="nav-account auth-logged-in" id="navAccount">
+        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
+          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        </button>
+        <div class="nav-account-menu" id="navAccountMenu">
+          <a href="dashboard.html">My Plots</a>
+          <a href="profile.html">Profile</a>
+          <a href="#" id="navLogoutBtn">Log Out</a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -52,9 +60,13 @@
         splits real, mapped plots into individual square meters, so you can start owning land
         today — 5 sqm at a time — and add more whenever you're ready.
       </p>
-      <div class="hero-actions">
+      <div class="hero-actions auth-logged-out">
         <a href="signup.html" class="btn btn-primary">Get Started</a>
         <a href="login.html" class="btn btn-secondary">Log In</a>
+      </div>
+      <div class="hero-actions auth-logged-in">
+        <a href="dashboard.html" class="btn btn-primary">Go to My Plots</a>
+        <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
       </div>
     </div>
   </section>
@@ -88,7 +100,7 @@
     </div>
   </section>
 
-  <section class="section-tight">
+  <section class="section-tight auth-logged-out">
     <div class="container">
       <div class="panel" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px;">
         <div>

@@ -147,4 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
       OsmiAuth.logOut();
     });
   }
+
+  const trigger = document.getElementById('navAccountTrigger');
+  const menu = document.getElementById('navAccountMenu');
+  if (trigger && menu) {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && e.target !== trigger) {
+        menu.classList.remove('open');
+      }
+    });
+  }
 });

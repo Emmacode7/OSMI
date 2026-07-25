@@ -35,8 +35,16 @@
       <a href="about.html" class="active">About &amp; Contact</a>
       <a href="login.html" class="auth-logged-out">Log In</a>
       <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
-      <a href="dashboard.html" class="auth-logged-in">My Plots</a>
-      <a href="#" id="navLogoutBtn" class="auth-logged-in">Log Out</a>
+      <div class="nav-account auth-logged-in" id="navAccount">
+        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
+          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        </button>
+        <div class="nav-account-menu" id="navAccountMenu">
+          <a href="dashboard.html">My Plots</a>
+          <a href="profile.html">Profile</a>
+          <a href="#" id="navLogoutBtn">Log Out</a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -81,7 +89,7 @@
         <p>32, Joseph Wayas Close, National Assembly Quarters, Abuja, Nigeria</p>
       </div>
     </div>
-    <!-- <p class="hint" style="margin-top:24px;">Placeholder contact details above.</p> -->
+    <!-- <p class="hint" style="margin-top:24px;">Placeholder contact details.</p> -->
   </div>
 </main>
 

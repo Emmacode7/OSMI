@@ -118,5 +118,21 @@ const OsmiApi = {
       body: JSON.stringify({ action: 'whoAmI', token: token })
     });
     return res.json();
+  },
+
+  async updateProfile(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'updateProfile' }, payload))
+    });
+    return res.json();
+  },
+
+  async changePassword(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'changePassword' }, payload))
+    });
+    return res.json();
   }
 };

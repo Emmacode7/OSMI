@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile — One Square Meter Initiative</title>
+<link rel="icon" href="assets/osmi-logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="index.html">
+        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      </a>
+      <div class="powered-by">
+        <div>
+          <div class="pb-label">Powered by</div>
+          <div class="pb-brand">
+            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+            <span class="pb-name font-anton">LEISURE COURT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="buy.html">Buy</a>
+      <a href="sell.html">Sell Back</a>
+      <a href="about.html">About &amp; Contact</a>
+      <a href="login.html" class="auth-logged-out">Log In</a>
+      <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
+      <div class="nav-account auth-logged-in" id="navAccount">
+        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
+          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        </button>
+        <div class="nav-account-menu" id="navAccountMenu">
+          <a href="dashboard.html">My Plots</a>
+          <a href="profile.html" class="active">Profile</a>
+          <a href="#" id="navLogoutBtn">Log Out</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="section-tight">
+  <div class="container" style="max-width:520px;">
+    <div class="section-label">Your account</div>
+    <h2 class="section-title">Profile</h2>
+
+    <div id="verifyBanner"></div>
+
+    <div class="panel">
+      <div class="section-sublabel">Account details</div>
+      <label for="name">Full name</label>
+      <input id="name" type="text" />
+
+      <label for="phone">Phone number</label>
+      <input id="phone" type="tel" />
+
+      <label for="email">Email</label>
+      <input id="email" type="email" disabled style="opacity:0.6; cursor:not-allowed;" />
+      <div class="hint">Email can't be changed here since it's tied to your verification and purchase history.</div>
+
+      <button class="btn-block" id="saveProfileBtn" type="button">Save Changes</button>
+      <div class="status" id="profileStatusBox"></div>
+    </div>
+
+    <div class="panel">
+      <div class="section-sublabel">Change password</div>
+      <label for="currentPassword">Current password</label>
+      <input id="currentPassword" type="password" autocomplete="current-password" />
+
+      <label for="newPassword">New password</label>
+      <input id="newPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+
+      <label for="confirmNewPassword">Confirm new password</label>
+      <input id="confirmNewPassword" type="password" autocomplete="new-password" />
+
+      <button class="btn-block" id="changePasswordBtn" type="button">Change Password</button>
+      <div class="hint">You'll be logged out everywhere after changing your password, as a security precaution.</div>
+      <div class="status" id="passwordStatusBox"></div>
+    </div>
+
+    <div class="panel" style="text-align:center;">
+      <button class="btn btn-secondary" id="logoutBtn" type="button" style="width:100%;">Log Out</button>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
+    </div>
+    <div class="footer-links">
+      <a href="dashboard.html">My Plots</a>
+      <a href="buy.html">Buy More</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/site-nav.js"></script>
+<script src="js/site-config.js"></script>
+<script src="js/site-api.js"></script>
+<script src="js/site-auth.js"></script>
+<script>
+(function(){
+  OsmiAuth.requireLogin();
+  OsmiAuth.renderVerificationBanner('verifyBanner');
+
+  const el = (id) => document.getElementById(id);
+  const buyer = OsmiAuth.getBuyer();
+
+  if (buyer){
+    el('name').value = buyer.name || '';
+    el('phone').value = buyer.phone || '';
+    el('email').value = buyer.email || '';
+  }
+
+  function showStatus(id, kind, text){
+    const box = el(id);
+    box.className = 'status show ' + kind;
+    box.textContent = text;
+  }
+
+  el('saveProfileBtn').addEventListener('click', async () => {
+    const name = el('name').value.trim();
+    const phone = el('phone').value.trim();
+    if (!name || !phone){
+      showStatus('profileStatusBox', 'error', 'Name and phone cannot be empty.');
+      return;
+    }
+
+    el('saveProfileBtn').disabled = true;
+    showStatus('profileStatusBox', 'pending', 'Saving…');
+
+    try{
+      const result = await OsmiApi.updateProfile({ token: OsmiAuth.getToken(), name, phone });
+      el('saveProfileBtn').disabled = false;
+      if (result.success){
+        const current = OsmiAuth.getBuyer() || {};
+        OsmiAuth.setSession(OsmiAuth.getToken(), Object.assign({}, current, result.buyer));
+        showStatus('profileStatusBox', 'ok', 'Profile updated.');
+      } else {
+        showStatus('profileStatusBox', 'error', result.message || 'Could not update your profile.');
+      }
+    } catch (err){
+      el('saveProfileBtn').disabled = false;
+      showStatus('profileStatusBox', 'error', 'Something went wrong. Please try again.');
+    }
+  });
+
+  el('changePasswordBtn').addEventListener('click', async () => {
+    const currentPassword = el('currentPassword').value;
+    const newPassword = el('newPassword').value;
+    const confirmNewPassword = el('confirmNewPassword').value;
+
+    if (!currentPassword || !newPassword || !confirmNewPassword){
+      showStatus('passwordStatusBox', 'error', 'Fill in all three fields.');
+      return;
+    }
+    if (newPassword.length < 6){
+      showStatus('passwordStatusBox', 'error', 'New password must be at least 6 characters.');
+      return;
+    }
+    if (newPassword !== confirmNewPassword){
+      showStatus('passwordStatusBox', 'error', 'New passwords do not match.');
+      return;
+    }
+
+    el('changePasswordBtn').disabled = true;
+    showStatus('passwordStatusBox', 'pending', 'Updating…');
+
+    try{
+      const result = await OsmiApi.changePassword({ token: OsmiAuth.getToken(), currentPassword, newPassword });
+      if (result.success){
+        showStatus('passwordStatusBox', 'ok', (result.message || 'Password changed.') + ' Redirecting to log in…');
+        setTimeout(() => { OsmiAuth.clearSession(); window.location.href = 'login.html'; }, 1400);
+      } else {
+        el('changePasswordBtn').disabled = false;
+        showStatus('passwordStatusBox', 'error', result.message || 'Could not change your password.');
+      }
+    } catch (err){
+      el('changePasswordBtn').disabled = false;
+      showStatus('passwordStatusBox', 'error', 'Something went wrong. Please try again.');
+    }
+  });
+
+  el('logoutBtn').addEventListener('click', () => { OsmiAuth.logOut(); });
+})();
+</script>
+</body>
+</html>
