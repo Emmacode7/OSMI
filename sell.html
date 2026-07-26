@@ -64,7 +64,8 @@
 
     <div class="panel">
       <label for="plotSelect">Plot</label>
-      <select id="plotSelect"><option value="">Loading plots…</option></select>
+      <select id="plotSelect"><option value="">Loading your plots…</option></select>
+      <div class="hint" id="ownedHint"></div>
 
       <label for="sqmInput">Sqm to sell back</label>
       <input id="sqmInput" type="number" min="1" placeholder="e.g. 20" />
@@ -129,37 +130,69 @@
   }
   function formatNaira(n){ return '₦' + Number(n).toLocaleString('en-NG'); }
 
-  OsmiApi.getPlotsForCheckout().then(function(list){
+  let myPlots = [];
+
+  function selectedPlot(){
+    const plotId = el('plotSelect').value;
+    return myPlots.find(p => String(p.plotId) === plotId);
+  }
+
+  function updateOwnedHint(){
+    const plot = selectedPlot();
+    const hint = el('ownedHint');
+    if (plot){
+      hint.textContent = 'You own ' + plot.mySqm + ' sqm on this plot.';
+      el('sqmInput').max = plot.mySqm;
+    } else {
+      hint.textContent = '';
+    }
+  }
+
+  OsmiApi.getMyPlots(OsmiAuth.getToken()).then(function(result){
     const select = el('plotSelect');
     select.innerHTML = '';
-    if (!list || list.length === 0){
-      select.innerHTML = '<option value="">No plots available</option>';
+    if (!result || !result.success){
+      select.innerHTML = '<option value="">Could not load your plots</option>';
       return;
     }
-    list.forEach(p => {
+    myPlots = result.plots || [];
+    if (myPlots.length === 0){
+      select.innerHTML = '<option value="">You don\u2019t own any sqm yet</option>';
+      showStatus('pending', 'You don\u2019t own any sqm yet, so there\u2019s nothing to sell back. Head to Buy to get started.');
+      el('submitBtn').disabled = true;
+      return;
+    }
+    myPlots.forEach(p => {
       const opt = document.createElement('option');
-      opt.value = p.name;
-      opt.textContent = p.name;
+      opt.value = p.plotId;
+      opt.textContent = p.plotName + ' (' + p.mySqm + ' sqm owned)';
       select.appendChild(opt);
     });
+    updateOwnedHint();
   }).catch(function(){
-    el('plotSelect').innerHTML = '<option value="">Could not load plots</option>';
+    el('plotSelect').innerHTML = '<option value="">Could not load your plots</option>';
   });
+
+  el('plotSelect').addEventListener('change', updateOwnedHint);
 
   el('submitBtn').addEventListener('click', async () => {
     clearStatus();
-    const plotName = el('plotSelect').value;
+    const plot = selectedPlot();
     const sqmToSellBack = Number(el('sqmInput').value);
     const bankName = el('bankName').value.trim();
     const accountNumber = el('accountNumber').value.trim();
     const accountName = el('accountName').value.trim();
 
-    if (!plotName || !bankName || !accountNumber || !accountName){
+    if (!plot || !bankName || !accountNumber || !accountName){
       showStatus('error', 'Please fill in all fields.');
       return;
     }
     if (!sqmToSellBack || sqmToSellBack <= 0){
       showStatus('error', 'Enter a valid sqm amount.');
+      return;
+    }
+    if (sqmToSellBack > plot.mySqm){
+      showStatus('error', 'You only own ' + plot.mySqm + ' sqm on this plot.');
       return;
     }
 
@@ -169,7 +202,7 @@
     try {
       const result = await OsmiApi.submitSellback({
         token: OsmiAuth.getToken(),
-        plotName, sqmToSellBack, bankName, accountNumber, accountName
+        plotName: plot.plotName, sqmToSellBack, bankName, accountNumber, accountName
       });
       el('submitBtn').disabled = false;
       if (result && result.success){

@@ -39,15 +39,33 @@ const OsmiAuth = {
   },
 
   /**
-   * Call at the top of any page that requires login (buy, sell, dashboard).
-   * Redirects to login.html, remembering where to send the user back to
-   * once they've logged in.
+   * Call at the top of any page that requires login (buy, sell, dashboard,
+   * profile). Verifies the session WITH THE SERVER — not just checking that
+   * a token happens to be sitting in localStorage — so a stale or expired
+   * token gets cleared and the person is sent to log in again, instead of
+   * silently landing on a page that only fails once they try to act on it.
    */
-  requireLogin() {
-    if (!this.isLoggedIn()) {
-      const here = window.location.pathname.split('/').pop() || 'index.html';
-      window.location.href = 'login.html?next=' + encodeURIComponent(here);
+  async requireLogin() {
+    const token = this.getToken();
+    if (!token) {
+      this._goToLogin();
+      return null;
     }
+    try {
+      const result = await OsmiApi.whoAmI(token);
+      if (result.success) {
+        localStorage.setItem(this.BUYER_KEY, JSON.stringify(result.buyer));
+        return result.buyer;
+      }
+    } catch (e) { /* treat as invalid below, same as an explicit failure */ }
+    this.clearSession();
+    this._goToLogin();
+    return null;
+  },
+
+  _goToLogin() {
+    const here = window.location.pathname.split('/').pop() || 'index.html';
+    window.location.href = 'login.html?next=' + encodeURIComponent(here);
   },
 
   async logOut() {
@@ -116,13 +134,39 @@ const OsmiAuth = {
 };
 
 /**
- * Shared nav rendering: shows Login/Sign Up when logged out, My Plots/Log
- * Out when logged in. Expects nav links tagged with class="auth-logged-out"
- * or class="auth-logged-in", and an element with id="navLogoutBtn" for the
- * log-out action. Also fills in any element with class="auth-buyer-name".
+ * Shared nav rendering: shows Login/Sign Up when logged out, an account
+ * menu (My Plots / Profile / Log Out) when logged in. Validates the
+ * session WITH THE SERVER on every page load rather than just trusting
+ * that a token happens to be sitting in localStorage — a stale or expired
+ * token (e.g. left over from earlier testing, or past its 30-day expiry)
+ * gets cleared automatically, so the nav can't get stuck in a state that
+ * doesn't match reality. Expects nav links tagged with
+ * class="auth-logged-out" or class="auth-logged-in", and an element with
+ * id="navLogoutBtn" for the log-out action. Also fills in any element with
+ * class="auth-buyer-name".
  */
-document.addEventListener('DOMContentLoaded', () => {
-  const loggedIn = OsmiAuth.isLoggedIn();
+document.addEventListener('DOMContentLoaded', async () => {
+  let loggedIn = false;
+  let buyer = null;
+
+  const token = OsmiAuth.getToken();
+  if (token) {
+    try {
+      const result = await OsmiApi.whoAmI(token);
+      if (result.success) {
+        loggedIn = true;
+        buyer = result.buyer;
+        localStorage.setItem(OsmiAuth.BUYER_KEY, JSON.stringify(buyer));
+      } else {
+        OsmiAuth.clearSession();
+      }
+    } catch (e) {
+      // Network hiccup — don't force a logged-out flash on a flaky
+      // connection; fall back to trusting the last locally cached state.
+      loggedIn = OsmiAuth.isLoggedIn();
+      buyer = OsmiAuth.getBuyer();
+    }
+  }
 
   document.querySelectorAll('.auth-logged-out').forEach(el => {
     el.style.display = loggedIn ? 'none' : '';
@@ -131,13 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
     el.style.display = loggedIn ? '' : 'none';
   });
 
-  if (loggedIn) {
-    const buyer = OsmiAuth.getBuyer();
-    if (buyer && buyer.name) {
-      document.querySelectorAll('.auth-buyer-name').forEach(el => {
-        el.textContent = buyer.name.split(' ')[0];
-      });
-    }
+  if (loggedIn && buyer && buyer.name) {
+    document.querySelectorAll('.auth-buyer-name').forEach(el => {
+      el.textContent = buyer.name.split(' ')[0];
+    });
   }
 
   const logoutBtn = document.getElementById('navLogoutBtn');
