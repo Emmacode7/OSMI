@@ -97,7 +97,7 @@ img{max-width:100%;display:block;}
 .nav-cta:hover{background:var(--green-dark);}
 .nav-toggle{display:none;background:none;border:1px solid var(--panel-border);color:var(--ink);padding:7px 10px;border-radius:2px;cursor:pointer;}
 
-.auth-logged-out, .auth-logged-in{display:none;}
+.auth-logged-out, .auth-logged-in{display:none !important;}
 
 .nav-account{position:relative;}
 .nav-account-trigger{

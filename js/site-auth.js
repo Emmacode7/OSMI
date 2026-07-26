@@ -169,10 +169,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   document.querySelectorAll('.auth-logged-out').forEach(el => {
-    el.style.display = loggedIn ? 'none' : '';
+    el.style.setProperty('display', loggedIn ? 'none' : (el.dataset.show || 'inline-block'), 'important');
   });
   document.querySelectorAll('.auth-logged-in').forEach(el => {
-    el.style.display = loggedIn ? '' : 'none';
+    el.style.setProperty('display', loggedIn ? (el.dataset.show || 'inline-block') : 'none', 'important');
   });
 
   if (loggedIn && buyer && buyer.name) {

@@ -1,113 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>About &amp; Contact — One Square Meter Initiative</title>
-<link rel="icon" href="assets/osmi-logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
-</head>
-<body>
-
-<header class="site-header">
-  <div class="nav-inner">
-    <div style="display:flex;align-items:center;">
-      <a class="brand" href="index.html">
-        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      </a>
-      <div class="powered-by">
-        <div>
-          <div class="pb-label">Powered by</div>
-          <div class="pb-brand">
-            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
-            <span class="pb-name font-anton">LEISURE COURT</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About &amp; Contact — One Square Meter Initiative</title>
+    <link rel="icon" href="assets/osmi-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-inner">
+        <div style="display: flex; align-items: center">
+          <a class="brand" href="index.html">
+            <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          </a>
+          <div class="powered-by">
+            <div>
+              <div class="pb-label">Powered by</div>
+              <div class="pb-brand">
+                <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+                <span class="pb-name font-anton">LEISURE COURT</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="buy.html">Buy</a>
-      <a href="sell.html">Sell Back</a>
-      <a href="about.html" class="active">About &amp; Contact</a>
-      <a href="login.html" class="auth-logged-out">Log In</a>
-      <a href="signup.html" class="auth-logged-out nav-cta">Sign Up</a>
-      <div class="nav-account auth-logged-in" id="navAccount">
-        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
-          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          ☰
         </button>
-        <div class="nav-account-menu" id="navAccountMenu">
+        <nav class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="buy.html">Buy</a>
+          <a href="sell.html">Sell Back</a>
+          <a href="about.html" class="active">About &amp; Contact</a>
+          <a href="login.html" class="auth-logged-out" data-show="inline-block"
+            >Log In</a
+          >
+          <a
+            href="signup.html"
+            class="auth-logged-out nav-cta"
+            data-show="inline-block"
+            >Sign Up</a
+          >
+          <div
+            class="nav-account auth-logged-in"
+            id="navAccount"
+            data-show="inline-block"
+          >
+            <button
+              type="button"
+              class="nav-account-trigger"
+              id="navAccountTrigger"
+            >
+              <span class="auth-buyer-name">Account</span>
+              <span class="caret">▾</span>
+            </button>
+            <div class="nav-account-menu" id="navAccountMenu">
+              <a href="dashboard.html">My Plots</a>
+              <a href="profile.html">Profile</a>
+              <a href="#" id="navLogoutBtn">Log Out</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container" style="max-width: 760px">
+        <div class="section-label">About</div>
+        <h2 class="section-title">One Square Meter Initiative</h2>
+        <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.7">
+          The One Square Meter Initiative is a
+          <span class="font-anton">Leisure Court</span> project, built to solve
+          a simple problem: full plots are priced out of reach for a lot of
+          people who could otherwise be building equity in land right now.
+          Instead of requiring the full price upfront, we let you buy in by the
+          square meter — starting at 5 sqm — and add to your holding whenever
+          you're ready.
+        </p>
+        <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.7">
+          Every purchase is recorded permanently at the price you paid. As
+          infrastructure — roads, drainage, and further development — goes into
+          a plot, the price per square meter rises for new buyers, but never
+          retroactively for sqm you already own. Buy once at ₦40,000/sqm, and
+          that portion stays yours at that price even after the rate moves to
+          ₦55,000 or higher.
+        </p>
+        <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.7">
+          Sign up once and your dashboard shows exactly what you own, and at
+          what price — visible only to you. If your plans change, you can
+          request to sell back your square meters at the current rate.
+        </p>
+
+        <hr class="section-divider" style="margin: 40px 0" />
+
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">Get in touch</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Phone</h3>
+            <p>
+              <a
+                href="tel:+2348171420000"
+                style="color: var(--green-dark); text-decoration: none"
+                >+234 817 142 0000</a
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>Email</h3>
+            <p>
+              <a
+                href="mailto:info@leisurecourt.ng"
+                style="color: var(--green-dark); text-decoration: none"
+                >info@leisurecourt.ng</a
+              >
+            </p>
+            <p>
+              <a
+                href="mailto:sales@leisurecourt.ng"
+                style="color: var(--green-dark); text-decoration: none"
+                >sales@leisurecourt.ng</a
+              >
+            </p>
+          </div>
+          <div class="card">
+            <h3>Office</h3>
+            <p>
+              32, Joseph Wayas Close, National Assembly Quarters, Abuja, Nigeria
+            </p>
+          </div>
+        </div>
+        <p class="hint" style="margin-top: 24px">
+          Placeholder contact details above — update the phone, email, and
+          address in this page before going live.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          <span
+            >© 2026 One Square Meter Initiative — powered by
+            <span class="font-anton">Leisure Court</span></span
+          >
+        </div>
+        <div class="footer-links">
           <a href="dashboard.html">My Plots</a>
-          <a href="profile.html">Profile</a>
-          <a href="#" id="navLogoutBtn">Log Out</a>
+          <a href="sell.html">Sell Back Sqm</a>
         </div>
       </div>
-    </nav>
-  </div>
-</header>
+    </footer>
 
-<main class="section">
-  <div class="container" style="max-width:760px;">
-    <div class="section-label">About</div>
-    <h2 class="section-title">One Square Meter Initiative</h2>
-    <p style="color:var(--ink-dim); font-size:15px; line-height:1.7;">
-      The One Square Meter Initiative is a <span class="font-anton">Leisure Court</span> project, built to solve a
-      simple problem: full plots are priced out of reach for a lot of people who could otherwise be building
-      equity in land right now. Instead of requiring the full price upfront, we let you buy in by the square
-      meter — starting at 5 sqm — and add to your holding whenever you're ready.
-    </p>
-    <p style="color:var(--ink-dim); font-size:15px; line-height:1.7;">
-      Every purchase is recorded permanently at the price you paid. As infrastructure — roads,
-      drainage, and further development — goes into a plot, the price per square meter rises for
-      new buyers, but never retroactively for sqm you already own. Buy once at ₦40,000/sqm, and
-      that portion stays yours at that price even after the rate moves to ₦55,000 or higher.
-    </p>
-    <p style="color:var(--ink-dim); font-size:15px; line-height:1.7;">
-      Sign up once and your dashboard shows exactly what you own, and at what price — visible only
-      to you. If your plans change, you can request to sell back your square meters at the current rate.
-    </p>
-
-    <hr class="section-divider" style="margin:40px 0;" />
-
-    <div class="section-label">Contact</div>
-    <h2 class="section-title">Get in touch</h2>
-    <div class="card-grid">
-      <div class="card">
-        <h3>Phone</h3>
-        <p><a href="tel:+2348171420000" style="color:var(--green-dark); text-decoration:none;">+234 817 142 0000</a></p>
-      </div>
-      <div class="card">
-        <h3>Email</h3>
-        <p><a href="mailto:info@leisurecourt.ng" style="color:var(--green-dark); text-decoration:none;">info@leisurecourt.ng</a></p>
-        <p><a href="mailto:sales@leisurecourt.ng" style="color:var(--green-dark); text-decoration:none;">sales@leisurecourt.ng</a></p>
-      </div>
-      <div class="card">
-        <h3>Office</h3>
-        <p>32, Joseph Wayas Close, National Assembly Quarters, Abuja, Nigeria</p>
-      </div>
-    </div>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
-    </div>
-    <div class="footer-links">
-      <a href="dashboard.html">My Plots</a>
-      <a href="sell.html">Sell Back Sqm</a>
-    </div>
-  </div>
-</footer>
-
-<script src="js/site-nav.js"></script>
-<script src="js/site-config.js"></script>
-<script src="js/site-api.js"></script>
-<script src="js/site-auth.js"></script>
-</body>
+    <script src="js/site-nav.js"></script>
+    <script src="js/site-config.js"></script>
+    <script src="js/site-api.js"></script>
+    <script src="js/site-auth.js"></script>
+  </body>
 </html>
