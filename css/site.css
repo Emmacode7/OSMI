@@ -91,7 +91,7 @@ img{max-width:100%;display:block;}
 .nav-links a:hover, .nav-links a.active{color:var(--ink);border-bottom-color:var(--green);}
 .nav-cta{
   font-family:'IBM Plex Sans', sans-serif;font-size:13px;font-weight:600;
-  background:var(--green);color:#fff !important;padding:9px 18px;border-radius:2px;
+  background:var(--green);color:#fff !important;padding:15px 18px;border-radius:30px;
   text-decoration:none;white-space:nowrap;border-bottom:none !important;
 }
 .nav-cta:hover{background:var(--green-dark);}

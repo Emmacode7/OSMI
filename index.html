@@ -1,159 +1,237 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>One Square Meter Initiative</title>
-<meta name="description" content="Own land one square meter at a time. Buy affordable portions of real plots, watch your ownership grow, and sell back anytime." />
-<link rel="icon" href="assets/osmi-logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
-</head>
-<body>
-
-<header class="site-header">
-  <div class="nav-inner">
-    <div style="display:flex;align-items:center;">
-      <a class="brand" href="index.html">
-        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      </a>
-      <div class="powered-by">
-        <div>
-          <div class="pb-label">Powered by</div>
-          <div class="pb-brand">
-            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
-            <span class="pb-name font-anton">LEISURE COURT</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One Square Meter Initiative</title>
+    <meta
+      name="description"
+      content="Own land one square meter at a time. Buy affordable portions of real plots, watch your ownership grow, and sell back anytime."
+    />
+    <link rel="icon" href="assets/osmi-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-inner">
+        <div style="display: flex; align-items: center">
+          <a class="brand" href="index.html">
+            <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          </a>
+          <div class="powered-by">
+            <div>
+              <div class="pb-label">Powered by</div>
+              <div class="pb-brand">
+                <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+                <span class="pb-name font-anton">LEISURE COURT</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html" class="active">Home</a>
-      <a href="buy.html">Buy</a>
-      <a href="sell.html">Sell Back</a>
-      <a href="about.html">About &amp; Contact</a>
-      <a href="login.html" class="auth-logged-out" data-show="inline-block">Log In</a>
-      <a href="signup.html" class="auth-logged-out nav-cta" data-show="inline-block">Sign Up</a>
-      <div class="nav-account auth-logged-in" id="navAccount" data-show="inline-block">
-        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
-          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          ☰
         </button>
-        <div class="nav-account-menu" id="navAccountMenu">
-          <a href="dashboard.html">My Plots</a>
-          <a href="profile.html">Profile</a>
-          <a href="#" id="navLogoutBtn">Log Out</a>
+        <nav class="nav-links" id="navLinks">
+          <a href="index.html" class="active">Home</a>
+          <a href="buy.html">Buy</a>
+          <a href="sell.html">Sell Back</a>
+          <a href="about.html">About &amp; Contact</a>
+          <a href="login.html" class="auth-logged-out" data-show="inline-block"
+            >Log In</a
+          >
+          <a
+            href="signup.html"
+            class="auth-logged-out nav-cta"
+            data-show="inline-block"
+            >Sign Up</a
+          >
+          <div
+            class="nav-account auth-logged-in"
+            id="navAccount"
+            data-show="inline-block"
+          >
+            <button
+              type="button"
+              class="nav-account-trigger"
+              id="navAccountTrigger"
+            >
+              <span class="auth-buyer-name">Account</span>
+              <span class="caret">▾</span>
+            </button>
+            <div class="nav-account-menu" id="navAccountMenu">
+              <a href="dashboard.html">My Plots</a>
+              <a href="profile.html">Profile</a>
+              <a href="#" id="navLogoutBtn">Log Out</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="eyebrow">Land ownership, subdivided</div>
+          <h1>Own land, <em>one square meter</em> at a time.</h1>
+          <p class="lede">
+            Full plots cost more than most people can pay at once. The One
+            Square Meter Initiative splits real, mapped plots into individual
+            square meters, so you can start owning land today — for as low as 1
+            sqm at a time — and add more whenever you're ready.
+          </p>
+          <div class="hero-actions auth-logged-out" data-show="flex">
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+            <a href="login.html" class="btn btn-secondary">Log In</a>
+          </div>
+          <div class="hero-actions auth-logged-in" data-show="flex">
+            <a href="dashboard.html" class="btn btn-primary">Go to My Plots</a>
+            <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-label">How it works</div>
+          <h2 class="section-title">
+            From square meter to certificate, in minutes.
+          </h2>
+          <div class="card-grid">
+            <div class="card">
+              <div class="step-num">01</div>
+              <h3>Create your account</h3>
+              <p>
+                Sign up once with your name, phone, and email — this is how we
+                keep your allocations private and tied to you alone.
+              </p>
+            </div>
+            <div class="card">
+              <div class="step-num">02</div>
+              <h3>Choose a plot &amp; sqm</h3>
+              <p>
+                Pick a plot and how many square meters to buy — minimum 5 sqm
+                per purchase. See the live price and what's still available
+                before you commit.
+              </p>
+            </div>
+            <div class="card">
+              <div class="step-num">03</div>
+              <h3>Pay securely</h3>
+              <p>
+                Checkout runs on Paystack — pay by card, bank transfer, or USSD.
+                Your payment is verified directly with Paystack before anything
+                is allocated to you.
+              </p>
+            </div>
+            <div class="card">
+              <div class="step-num">04</div>
+              <h3>Grow your ownership</h3>
+              <p>
+                Come back anytime to buy more. Prices only rise as
+                infrastructure goes in — sqm you already own keeps the price you
+                paid for it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight auth-logged-out" data-show="block">
+        <div class="container">
+          <div
+            class="panel"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 18px;
+            "
+          >
+            <div>
+              <div class="section-label">Already own sqm?</div>
+              <h2 class="section-title" style="margin-bottom: 6px">
+                Log in to see exactly what you own.
+              </h2>
+              <p
+                style="
+                  color: var(--ink-dim);
+                  font-size: 14px;
+                  max-width: 52ch;
+                  margin: 0;
+                "
+              >
+                Your dashboard shows every plot you own, what you paid for each
+                portion, and how close you are to a full plot — or request a
+                sell-back at today's rate.
+              </p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap">
+              <a href="login.html" class="btn btn-secondary">Log In</a>
+              <a href="sell.html" class="btn btn-secondary">Sell Back Sqm</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-label">Why it works</div>
+          <h2 class="section-title">
+            Built for how land actually gets bought here.
+          </h2>
+          <div class="card-grid">
+            <div class="card">
+              <h3>Start small, own real land</h3>
+              <p>
+                No need to save up for a whole plot. Buy what you can afford
+                now, and add to it whenever you have more.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Your price is locked in</h3>
+              <p>
+                Every square meter you buy is recorded at the price you paid,
+                permanently — later price rises never apply retroactively.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Private, transparent records</h3>
+              <p>
+                Every allocation is logged the moment it's made. Log in anytime
+                and see exactly what you own, and at what price — visible only
+                to you.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          <span
+            >© 2026 One Square Meter Initiative — powered by
+            <span class="font-anton">Leisure Court</span></span
+          >
+        </div>
+        <div class="footer-links">
+          <a href="about.html">About &amp; Contact</a>
+          <a href="login.html">Log In</a>
         </div>
       </div>
-    </nav>
-  </div>
-</header>
+    </footer>
 
-<main>
-  <section class="hero">
-    <div class="container">
-      <div class="eyebrow">Land ownership, subdivided</div>
-      <h1>Own land, <em>one square meter</em> at a time.</h1>
-      <p class="lede">
-        Full plots cost more than most people can pay at once. The One Square Meter Initiative
-        splits real, mapped plots into individual square meters, so you can start owning land
-        today — 5 sqm at a time — and add more whenever you're ready.
-      </p>
-      <div class="hero-actions auth-logged-out" data-show="flex">
-        <a href="signup.html" class="btn btn-primary">Get Started</a>
-        <a href="login.html" class="btn btn-secondary">Log In</a>
-      </div>
-      <div class="hero-actions auth-logged-in" data-show="flex">
-        <a href="dashboard.html" class="btn btn-primary">Go to My Plots</a>
-        <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-label">How it works</div>
-      <h2 class="section-title">From square meter to certificate, in minutes.</h2>
-      <div class="card-grid">
-        <div class="card">
-          <div class="step-num">01</div>
-          <h3>Create your account</h3>
-          <p>Sign up once with your name, phone, and email — this is how we keep your allocations private and tied to you alone.</p>
-        </div>
-        <div class="card">
-          <div class="step-num">02</div>
-          <h3>Choose a plot &amp; sqm</h3>
-          <p>Pick a plot and how many square meters to buy — minimum 5 sqm per purchase. See the live price and what's still available before you commit.</p>
-        </div>
-        <div class="card">
-          <div class="step-num">03</div>
-          <h3>Pay securely</h3>
-          <p>Checkout runs on Paystack — pay by card, bank transfer, or USSD. Your payment is verified directly with Paystack before anything is allocated to you.</p>
-        </div>
-        <div class="card">
-          <div class="step-num">04</div>
-          <h3>Grow your ownership</h3>
-          <p>Come back anytime to buy more. Prices only rise as infrastructure goes in — sqm you already own keeps the price you paid for it.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-tight auth-logged-out" data-show="block">
-    <div class="container">
-      <div class="panel" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px;">
-        <div>
-          <div class="section-label">Already own sqm?</div>
-          <h2 class="section-title" style="margin-bottom:6px;">Log in to see exactly what you own.</h2>
-          <p style="color:var(--ink-dim); font-size:14px; max-width:52ch; margin:0;">Your dashboard shows every plot you own, what you paid for each portion, and how close you are to a full plot — or request a sell-back at today's rate.</p>
-        </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a href="login.html" class="btn btn-secondary">Log In</a>
-          <a href="sell.html" class="btn btn-secondary">Sell Back Sqm</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-label">Why it works</div>
-      <h2 class="section-title">Built for how land actually gets bought here.</h2>
-      <div class="card-grid">
-        <div class="card">
-          <h3>Start small, own real land</h3>
-          <p>No need to save up for a whole plot. Buy what you can afford now, and add to it whenever you have more.</p>
-        </div>
-        <div class="card">
-          <h3>Your price is locked in</h3>
-          <p>Every square meter you buy is recorded at the price you paid, permanently — later price rises never apply retroactively.</p>
-        </div>
-        <div class="card">
-          <h3>Private, transparent records</h3>
-          <p>Every allocation is logged the moment it's made. Log in anytime and see exactly what you own, and at what price — visible only to you.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
-    </div>
-    <div class="footer-links">
-      <a href="about.html">About &amp; Contact</a>
-      <a href="login.html">Log In</a>
-    </div>
-  </div>
-</footer>
-
-<script src="js/site-nav.js"></script>
-<script src="js/site-config.js"></script>
-<script src="js/site-api.js"></script>
-<script src="js/site-auth.js"></script>
-</body>
+    <script src="js/site-nav.js"></script>
+    <script src="js/site-config.js"></script>
+    <script src="js/site-api.js"></script>
+    <script src="js/site-auth.js"></script>
+  </body>
 </html>
