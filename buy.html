@@ -23,7 +23,6 @@
           <div class="pb-label">Powered by</div>
           <div class="pb-brand">
             <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
-            <span class="pb-name font-anton">LEISURE COURT</span>
           </div>
         </div>
       </div>
@@ -58,7 +57,7 @@
 
     <div class="panel">
       <div class="section-sublabel">Buying as</div>
-      <div id="buyerIdentity" class="mono" style="font-size:13.5px; color:var(--ink); margin-top:6px;">Loading…</div>
+      <div id="buyerIdentity" style="font-family:'IBM Plex Sans', sans-serif; font-size:13.5px; color:var(--ink); margin-top:6px;">Loading…</div>
     </div>
 
     <div id="verifyBanner"></div>
@@ -78,6 +77,11 @@
       <button id="payBtn" class="btn-block" type="button">Pay Now</button>
       <div class="hint" id="availabilityHint"></div>
       <div class="status" id="statusBox"></div>
+    </div>
+
+    <div class="panel" id="priceChartPanel" style="display:none;">
+      <div class="section-sublabel">Price history</div>
+      <div id="priceChartContainer" style="margin-top:10px;"></div>
     </div>
   </div>
 </main>
@@ -99,6 +103,7 @@
 <script src="js/site-api.js"></script>
 <script src="js/site-nav.js"></script>
 <script src="js/site-auth.js"></script>
+<script src="js/site-chart.js"></script>
 <script>
 (function(){
   OsmiAuth.requireLogin();
@@ -146,7 +151,28 @@
       : 'Minimum purchase is 5 sqm.';
   }
 
-  el('plotSelect').addEventListener('change', () => { updateAvailabilityHint(); updateTotalPreview(); });
+  async function updatePriceChart(){
+    const plot = selectedPlot();
+    const panel = el('priceChartPanel');
+    if (!plot){
+      panel.style.display = 'none';
+      return;
+    }
+    panel.style.display = 'block';
+    el('priceChartContainer').innerHTML = '<div class="inspector-empty">Loading price history…</div>';
+    try{
+      const data = await OsmiApi.getPriceHistory(plot.name);
+      if (data && !data.error){
+        renderPriceChart('priceChartContainer', data);
+      } else {
+        el('priceChartContainer').innerHTML = '<div class="inspector-empty">Could not load price history.</div>';
+      }
+    } catch (err){
+      el('priceChartContainer').innerHTML = '<div class="inspector-empty">Could not load price history.</div>';
+    }
+  }
+
+  el('plotSelect').addEventListener('change', () => { updateAvailabilityHint(); updateTotalPreview(); updatePriceChart(); });
   el('sqmInput').addEventListener('input', updateTotalPreview);
 
   function generateReference(){
@@ -246,6 +272,7 @@
     });
     updateAvailabilityHint();
     updateTotalPreview();
+    updatePriceChart();
   }).catch(function(){
     el('plotSelect').innerHTML = '<option value="">Could not load plots</option>';
   });

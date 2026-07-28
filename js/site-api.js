@@ -32,6 +32,12 @@ const OsmiApi = {
     return res.json();
   },
 
+  async getPriceHistory(plotName) {
+    const url = OSMI_CONFIG.API_URL + '?action=getPriceHistory&plotName=' + encodeURIComponent(plotName);
+    const res = await fetch(url);
+    return res.json();
+  },
+
   async completePurchase(payload) {
     const res = await fetch(OSMI_CONFIG.API_URL, {
       method: 'POST',
