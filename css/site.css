@@ -180,8 +180,8 @@ img{max-width:100%;display:block;}
   color:var(--green);margin-bottom:14px;
 }
 .hero h1{font-size:42px;line-height:1.12;margin:0 0 18px;color:var(--ink);max-width:16ch;}
-.hero h1 em{font-style:normal;color:var(--green);}
-.hero p.lede{font-size:16.5px;color:var(--ink-dim);max-width:56ch;line-height:1.65;margin:0 0 30px;}
+.hero h1 em{font-style:normal;color:var(--orange);}
+.hero p.lede{font-size:16.5px;color:var(--ink);max-width:56ch;line-height:1.65;margin:0 0 30px;}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
 @media (max-width:640px){ .hero h1{font-size:32px;} }
 
