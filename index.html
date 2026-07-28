@@ -74,56 +74,26 @@
 
     <main>
       <section class="hero">
-        <svg
-          class="hero-bg-illustration"
-          viewBox="0 0 400 500"
-          preserveAspectRatio="xMidYMax slice"
-          aria-hidden="true"
-        >
-          <!-- skyline -->
-          <rect x="20" y="260" width="46" height="200" fill="#1e8449" />
-          <rect x="74" y="190" width="40" height="270" fill="#145a32" />
-          <rect x="122" y="230" width="52" height="230" fill="#1e8449" />
-          <rect x="182" y="150" width="44" height="310" fill="#145a32" />
-          <rect x="234" y="210" width="38" height="250" fill="#1e8449" />
-          <rect x="280" y="120" width="50" height="340" fill="#145a32" />
-          <rect x="338" y="270" width="42" height="190" fill="#1e8449" />
-          <!-- window grid on the tallest towers, echoing "one square meter" -->
-          <g stroke="#ffffff" stroke-width="2" opacity="0.5">
-            <path
-              d="M182 170h44M182 200h44M182 230h44M182 260h44M182 290h44M182 320h44M182 350h44M182 380h44M182 410h44M182 440h44"
-            />
-            <path d="M197 150v310M212 150v310" />
-            <path
-              d="M280 140h50M280 170h50M280 200h50M280 230h50M280 260h50M280 290h50M280 320h50M280 350h50M280 380h50M280 410h50M280 440h50"
-            />
-            <path d="M298 120v340M313 120v340" />
-          </g>
-          <!-- ground plot grid, subdivided into squares -->
-          <g stroke="#e8b923" stroke-width="1.5">
-            <path d="M0 460h400M0 480h400" />
-            <path
-              d="M20 460v40M60 460v40M100 460v40M140 460v40M180 460v40M220 460v40M260 460v40M300 460v40M340 460v40M380 460v40"
-            />
-          </g>
-        </svg>
-        <div class="container">
-          <div class="eyebrow">Land ownership, subdivided</div>
-          <h1>Own land, <em>one square meter</em> at a time.</h1>
-          <p class="lede">
-            Full plots cost more than most people can pay at once. The One
-            Square Meter Initiative splits real, mapped plots into individual
-            square meters, so you can start owning land today — 5 sqm at a time
-            — and add more whenever you're ready.
-          </p>
-          <div class="hero-actions auth-logged-out" data-show="flex">
-            <a href="signup.html" class="btn btn-primary">Get Started</a>
-            <a href="login.html" class="btn btn-secondary">Log In</a>
+        <div class="hero-content">
+          <div class="container">
+            <div class="eyebrow">Land ownership, subdivided</div>
+            <h1>Own land, <em>one square meter</em> at a time.</h1>
+            <p class="lede">
+              Full plots cost more than most people can pay at once. The One
+              Square Meter Initiative splits real, mapped plots into individual
+              square meters, so you can start owning land today — 5 sqm at a time
+              — and add more whenever you're ready.
+            </p>
+            <div class="hero-actions auth-logged-out" data-show="flex">
+              <a href="signup.html" class="btn btn-primary">Get Started</a>
+              <a href="login.html" class="btn btn-secondary">Log In</a>
+            </div>
+            <div class="hero-actions auth-logged-in" data-show="flex">
+              <a href="dashboard.html" class="btn btn-primary">Go to My Plots</a>
+              <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
+            </div>
           </div>
-          <div class="hero-actions auth-logged-in" data-show="flex">
-            <a href="dashboard.html" class="btn btn-primary">Go to My Plots</a>
-            <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
-          </div>
+          
         </div>
       </section>
 

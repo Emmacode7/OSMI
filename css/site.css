@@ -150,12 +150,31 @@ img{max-width:100%;display:block;}
 .footer-links a:hover{color:var(--ink);}
 
 /* ---------- hero ---------- */
-.hero{padding:76px 0 56px;position:relative;overflow:hidden;}
+.hero{min-height: 100vh;
+/* Green overlay + background image */
+    background:
+        linear-gradient(
+            rgba(151, 255, 142, 0.65),
+            rgba(255, 255, 255, 0.65)
+        ),
+        url("../assets/poster.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    color: white;}
 .hero-bg-illustration{
   position:absolute;top:0;right:0;bottom:0;width:60%;max-width:640px;
   opacity:0.09;pointer-events:none;z-index:0;
 }
-.hero .container{position:relative;z-index:1;}
+.hero-content {
+    max-width: 650px;
+    padding: 0 8%;
+}
+.hero .hero-content .container{position:relative;z-index:1;}
 .hero .eyebrow{
   font-family:'IBM Plex Sans', sans-serif;font-size:13.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--green);margin-bottom:14px;
