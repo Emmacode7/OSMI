@@ -10,7 +10,7 @@
 // ============================================================
 
 const OSMI_CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbyyzDM3s0wnrjTmymIb58qpddAMtocjAYGZxuYoUXhTvCIjm3LsAFq3ZycWXKdUsiqmOg/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbzOpiLLVv9yRpavj3xrmZRJu-9eQSKRuha9rjfawkWKhA4xJ5o2pMMMKm4YvCnEiTj3VQ/exec',
   PAYSTACK_PUBLIC_KEY: 'pk_test_2b0c3e7b9c4a326030587a5d67c28a0c07338a0e',
   CURRENCY: 'NGN'
 };
