@@ -6,17 +6,19 @@
     <title>One Square Meter Initiative</title>
     <meta
       name="description"
-      content="Own land one square meter at a time. Buy affordable portions of real plots, watch your ownership grow, and sell back anytime."
+      content="Own land one square metre at a time. Buy affordable portions of real plots, watch your ownership grow, and sell back anytime."
     />
     <link rel="icon" href="assets/osmi-logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,700&family=Anton&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/landing.css" />
   </head>
-  <body>
+  <body class="page-landing">
     <header class="site-header">
       <div class="nav-inner">
         <div style="display: flex; align-items: center">
@@ -73,201 +75,369 @@
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-content">
-          <div class="container">
-            <div class="eyebrow">Land ownership, subdivided</div>
-            <h1>Own land, <em>one square meter</em> at a time.</h1>
+      <section class="lp-hero">
+        <div class="lp-hero-bg" aria-hidden="true">
+          <img
+            src="assets/landing/hero-bg.jpg"
+            alt=""
+            width="1280"
+            height="720"
+          />
+        </div>
+        <div class="lp-wrap lp-hero-grid">
+          <div class="lp-hero-copy">
+            <div class="lp-eyebrow">
+              <img
+                src="assets/landing/icon-badge.svg"
+                alt=""
+                width="13"
+                height="12"
+              />
+              LAND OWNERSHIP, SUBDIVIDED
+            </div>
+            <h1>
+              Own land, <em>one square metre</em> at a time.
+            </h1>
             <p class="lede">
               New plots cost more than most people can pay at once. The One
-              Square Meter Initiative splits real, mapped plots into individual
-              square meters, so you can start owning land today for as low as —
-              1 sqm at a time — and add more whenever you're ready.
+              Square Metre Initiative splits real, mapped plots into individual
+              square metres, starting from <strong>₦40,000 per sqm</strong>.
             </p>
-            <div class="hero-actions auth-logged-out" data-show="flex">
-              <a href="signup.html" class="btn btn-primary">Get Started</a>
-              <a href="login.html" class="btn btn-secondary">Log In</a>
-            </div>
-            <div class="hero-actions auth-logged-in" data-show="flex">
-              <a href="dashboard.html" class="btn btn-primary"
-                >Go to My Plots</a
+            <div class="lp-hero-actions auth-logged-out" data-show="flex">
+              <a href="signup.html" class="btn btn-orange"
+                >Start Investing Today</a
               >
-              <a href="buy.html" class="btn btn-secondary">Buy More Sqm</a>
+              <a href="buy.html" class="btn btn-ghost">View Available Plots</a>
             </div>
+            <div class="lp-hero-actions auth-logged-in" data-show="flex">
+              <a href="dashboard.html" class="btn btn-orange">Go to My Plots</a>
+              <a href="buy.html" class="btn btn-ghost">Buy More Sqm</a>
+            </div>
+            <div class="lp-hero-stats">
+              <div>
+                <div class="lp-stat-num">30%</div>
+                <div class="lp-stat-label">Projected annual ROI</div>
+              </div>
+              <div class="lp-stat-divider" aria-hidden="true"></div>
+              <div>
+                <div class="lp-stat-num">5,000+</div>
+                <div class="lp-stat-label">Registered investors</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero visual: data-hero-visual = "grid" | "story" | "claim" | "iso3d" -->
+          <div class="lp-hero-visual" data-hero-visual="iso3d">
+            <!-- Option 1: animated plot grid + parallax -->
+            <aside
+              class="lp-plot"
+              data-visual="grid"
+              aria-label="Animated plot grid showing square metres being claimed"
+              hidden
+            >
+              <div class="lp-plot-head">
+                <div>
+                  <p class="lp-plot-kicker">Mapped plot · live preview</p>
+                  <h3>Own it, metre by metre</h3>
+                </div>
+                <div class="lp-plot-badge" aria-live="polite">
+                  <strong id="plotOwnedCount">0</strong>
+                  <span>sqm owned</span>
+                </div>
+              </div>
+              <div class="lp-plot-stage">
+                <div class="lp-plot-terrain" aria-hidden="true"></div>
+                <div
+                  class="lp-plot-grid"
+                  id="plotGrid"
+                  role="img"
+                  aria-label="Survey grid filling with owned square metres"
+                ></div>
+                <div class="lp-plot-pin">
+                  <span>Plot A · Lekki Corridor</span>
+                </div>
+              </div>
+              <div class="lp-plot-legend">
+                <span><i class="swatch is-available"></i> Available</span>
+                <span><i class="swatch is-yours"></i> Yours</span>
+                <span><i class="swatch is-claimed"></i> Claimed</span>
+              </div>
+            </aside>
+
+            <!-- Option 2: empty land → grid → metres → certificate -->
+            <aside
+              class="lp-story"
+              data-visual="story"
+              aria-label="Story of owning land one square metre at a time"
+              hidden
+            >
+              <div class="lp-story-head">
+                <p class="lp-story-kicker">How ownership begins</p>
+                <h3 id="storyTitle">Empty land</h3>
+                <p class="lp-story-caption" id="storyCaption">
+                  A real, mapped plot — waiting to be subdivided.
+                </p>
+              </div>
+              <div class="lp-story-stage" id="storyStage">
+                <div class="lp-story-land" aria-hidden="true">
+                  <img
+                    src="assets/landing/hero-bg.jpg"
+                    alt=""
+                    width="640"
+                    height="400"
+                  />
+                  <div class="lp-story-land-wash"></div>
+                </div>
+                <div
+                  class="lp-story-grid"
+                  id="storyGrid"
+                  aria-hidden="true"
+                ></div>
+                <div class="lp-story-cert" id="storyCert" aria-hidden="true">
+                  <div class="lp-story-cert-seal">1M²</div>
+                  <div class="lp-story-cert-body">
+                    <p class="lp-story-cert-label">Certificate of Ownership</p>
+                    <p class="lp-story-cert-title">One Square Metre Initiative</p>
+                    <div class="lp-story-cert-row">
+                      <span>Plot</span>
+                      <strong>A · Lekki Corridor</strong>
+                    </div>
+                    <div class="lp-story-cert-row">
+                      <span>Owned</span>
+                      <strong id="storyCertSqm">12 sqm</strong>
+                    </div>
+                    <div class="lp-story-cert-footer">
+                      Verified allocation · Paystack secured
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ol class="lp-story-phases" id="storyPhases" aria-hidden="true">
+                <li data-phase="land" class="is-active">Land</li>
+                <li data-phase="grid">Grid</li>
+                <li data-phase="own">Metres</li>
+                <li data-phase="cert">Certificate</li>
+              </ol>
+            </aside>
+
+            <!-- Option 3: interactive claim a metre -->
+            <aside
+              class="lp-claim"
+              data-visual="claim"
+              aria-label="Interactive plot — click square metres to claim them"
+              hidden
+            >
+              <div class="lp-claim-head">
+                <div>
+                  <p class="lp-claim-kicker">Try it · click a metre</p>
+                  <h3>Claim your square metres</h3>
+                </div>
+                <div class="lp-claim-badge" aria-live="polite">
+                  <strong id="claimCount">0</strong>
+                  <span>sqm selected</span>
+                </div>
+              </div>
+              <p class="lp-claim-hint" id="claimHint">
+                Tap empty squares to lock them in. Click again to release.
+              </p>
+              <div class="lp-claim-stage">
+                <div class="lp-claim-land" aria-hidden="true">
+                  <img
+                    src="assets/landing/step-plot.jpg"
+                    alt=""
+                    width="640"
+                    height="400"
+                  />
+                </div>
+                <div
+                  class="lp-claim-grid"
+                  id="claimGrid"
+                  role="group"
+                  aria-label="Plot survey grid"
+                ></div>
+                <div class="lp-claim-toast" id="claimToast" hidden></div>
+              </div>
+              <div class="lp-claim-footer">
+                <div class="lp-claim-meta">
+                  <span>₦40,000 / sqm</span>
+                  <strong id="claimTotal">₦0</strong>
+                </div>
+                <div class="lp-claim-actions">
+                  <button type="button" class="lp-claim-reset" id="claimReset">
+                    Clear
+                  </button>
+                  <a
+                    href="signup.html"
+                    class="btn btn-orange btn-sm lp-claim-cta auth-logged-out"
+                    data-show="inline-flex"
+                    id="claimCta"
+                    >Start with these</a
+                  >
+                  <a
+                    href="buy.html"
+                    class="btn btn-orange btn-sm lp-claim-cta auth-logged-in"
+                    data-show="inline-flex"
+                    >Buy these sqm</a
+                  >
+                </div>
+              </div>
+            </aside>
+
+            <!-- Option 4: soft isometric 3D plot -->
+            <aside
+              class="lp-iso"
+              data-visual="iso3d"
+              aria-label="Soft 3D isometric plot with rising square metres"
+            >
+              <div class="lp-iso-head">
+                <div>
+                  <p class="lp-iso-kicker">Soft 3D · move to tilt</p>
+                  <h3>Land, rising in metres</h3>
+                </div>
+                <div class="lp-iso-badge" aria-live="polite">
+                  <strong id="isoCount">0</strong>
+                  <span>sqm rising</span>
+                </div>
+              </div>
+              <div class="lp-iso-stage" id="isoStage">
+                <div class="lp-iso-glow" aria-hidden="true"></div>
+                <div class="lp-iso-world" id="isoWorld">
+                  <div class="lp-iso-ground" aria-hidden="true"></div>
+                  <div class="lp-iso-board" id="isoBoard"></div>
+                </div>
+                <div class="lp-iso-pin">Plot A · Lekki Corridor</div>
+              </div>
+              <div class="lp-iso-legend">
+                <span><i class="swatch is-base"></i> Base land</span>
+                <span><i class="swatch is-taken"></i> Claimed</span>
+                <span><i class="swatch is-yours"></i> Yours</span>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="section-label">How it works</div>
-          <h2 class="section-title">
-            From square meter to certificate, in minutes.
-          </h2>
-          <div class="card-grid">
-            <div class="card">
-              <div class="card-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <circle cx="12" cy="8" r="3.5" />
-                  <path d="M4.5 20c0-4 3.5-6.5 7.5-6.5s7.5 2.5 7.5 6.5" />
-                </svg>
+      <section class="lp-process" id="process">
+        <div class="lp-wrap">
+          <div class="lp-process-head">
+            <p class="lp-label">The process</p>
+            <h2 class="lp-title">
+              From square metre to certificate, in minutes.
+            </h2>
+          </div>
+          <div class="lp-bento">
+            <article class="lp-step lp-step-1">
+              <div class="lp-step-icon">
+                <img
+                  src="assets/landing/icon-user.svg"
+                  alt=""
+                  width="22"
+                  height="16"
+                />
               </div>
-              <div class="card-body">
-                <div class="step-num">01</div>
-                <h3>Create your account</h3>
-                <p>
-                  Sign up once with your name, phone, and email — this is how we
-                  keep your allocations private and tied to you alone.
-                </p>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="14" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                  <rect x="14" y="14" width="7" height="7" rx="1" />
-                </svg>
-              </div>
-              <div class="card-body">
-                <div class="step-num">02</div>
+              <div class="lp-step-num">01.</div>
+              <h3>Create your account</h3>
+              <p>
+                Sign up once with your name, phone, and email — this is how we
+                keep your allocations private and tied to you alone.
+              </p>
+            </article>
+
+            <article class="lp-step lp-step-2">
+              <div class="lp-step-copy">
+                <div class="lp-step-icon">
+                  <img
+                    src="assets/landing/icon-grid.svg"
+                    alt=""
+                    width="18"
+                    height="18"
+                  />
+                </div>
+                <div class="lp-step-num">02.</div>
                 <h3>Choose a plot &amp; sqm</h3>
                 <p>
-                  Pick a plot and how many square meters to buy — minimum 5 sqm
-                  per purchase. See the live price and what's still available
-                  before you commit.
+                  Pick a plot and how many square metres to buy — minimum 5 sqm
+                  per purchase. See live pricing and availability before you
+                  commit.
                 </p>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-icon is-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"
-                  />
-                  <path d="M9 12l2 2 4-4" />
-                </svg>
+              <div class="lp-step-media">
+                <img
+                  src="assets/landing/step-plot.jpg"
+                  alt="Modern residential development"
+                  width="360"
+                  height="256"
+                />
               </div>
-              <div class="card-body">
-                <div class="step-num">03</div>
+            </article>
+
+            <article class="lp-step lp-step-3">
+              <div class="lp-step-media">
+                <img
+                  src="assets/landing/step-pay.jpg"
+                  alt="Secure digital payment"
+                  width="360"
+                  height="256"
+                />
+              </div>
+              <div class="lp-step-copy">
+                <div class="lp-step-icon">
+                  <img
+                    src="assets/landing/icon-shield.svg"
+                    alt=""
+                    width="16"
+                    height="20"
+                  />
+                </div>
+                <div class="lp-step-num">03.</div>
                 <h3>Pay securely</h3>
                 <p>
                   Checkout runs on Paystack — pay by card, bank transfer, or
-                  USSD. Your payment is verified directly with Paystack before
-                  anything is allocated to you.
+                  USSD. Your payment is verified instantly before allocation.
                 </p>
               </div>
-            </div>
-            <div class="card">
-              <div class="card-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M3 17l6-6 4 4 7-8" />
-                  <path d="M15 6h5v5" />
-                </svg>
-              </div>
-              <div class="card-body">
-                <div class="step-num">04</div>
-                <h3>Grow your ownership</h3>
-                <p>
-                  Come back anytime to buy more. Prices only rise as
-                  infrastructure goes in — sqm you already own keeps the price
-                  you paid for it.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </article>
 
-      <section class="section-tight auth-logged-out" data-show="block">
-        <div class="container">
-          <div
-            class="panel"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              flex-wrap: wrap;
-              gap: 18px;
-            "
-          >
-            <div>
-              <div class="section-label">Already own sqm?</div>
-              <h2 class="section-title" style="margin-bottom: 6px">
-                Log in to see exactly what you own.
-              </h2>
-              <p
-                style="
-                  color: var(--ink-dim);
-                  font-size: 14px;
-                  max-width: 52ch;
-                  margin: 0;
-                "
-              >
-                Your dashboard shows every plot you own, what you paid for each
-                portion, and how close you are to a full plot — or request a
-                sell-back at today's rate.
+            <article class="lp-step lp-step-4">
+              <div class="lp-step-icon">
+                <img
+                  src="assets/landing/icon-grow.svg"
+                  alt=""
+                  width="20"
+                  height="12"
+                />
+              </div>
+              <div class="lp-step-num">04.</div>
+              <h3>Grow your ownership</h3>
+              <p>
+                Come back anytime to buy more. Prices only rise as
+                infrastructure goes in — sqm you already own keeps the price you
+                paid for it.
               </p>
-            </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap">
-              <a href="login.html" class="btn btn-secondary">Log In</a>
-              <a href="sell.html" class="btn btn-secondary">Sell Back Sqm</a>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="section-label">Why it works</div>
-          <h2 class="section-title">
-            Built for how land actually gets bought here.
-          </h2>
-          <div class="card-grid">
-            <div class="card">
-              <div class="card-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M4 11l8-7 8 7" />
-                  <path d="M6 10v9h12v-9" />
-                </svg>
+      <section class="lp-foundation" id="foundation">
+        <div class="lp-foundation-inner">
+          <div class="lp-foundation-copy">
+            <div>
+              <p class="lp-label">The foundation</p>
+              <h2 class="lp-title">
+                Built for how land actually gets bought here.
+              </h2>
+            </div>
+            <div class="lp-feature">
+              <div class="lp-feature-icon">
+                <img
+                  src="assets/landing/icon-home.svg"
+                  alt=""
+                  width="16"
+                  height="18"
+                />
               </div>
-              <div class="card-body">
+              <div>
                 <h3>Start small, own real land</h3>
                 <p>
                   No need to save up for a whole plot. Buy what you can afford
@@ -275,51 +445,105 @@
                 </p>
               </div>
             </div>
-            <div class="card">
-              <div class="card-icon is-orange">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="5" y="11" width="14" height="9" rx="2" />
-                  <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                </svg>
+            <div class="lp-feature">
+              <div class="lp-feature-icon">
+                <img
+                  src="assets/landing/icon-lock.svg"
+                  alt=""
+                  width="16"
+                  height="21"
+                />
               </div>
-              <div class="card-body">
+              <div>
                 <h3>Your price is locked in</h3>
                 <p>
-                  Every square meter you buy is recorded at the price you paid,
+                  Every square metre you buy is recorded at the price you paid,
                   permanently — later price rises never apply retroactively.
                 </p>
               </div>
             </div>
-            <div class="card">
-              <div class="card-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+            <div class="lp-feature">
+              <div class="lp-feature-icon">
+                <img
+                  src="assets/landing/icon-eye.svg"
+                  alt=""
+                  width="22"
+                  height="15"
+                />
               </div>
-              <div class="card-body">
+              <div>
                 <h3>Private, transparent records</h3>
                 <p>
                   Every allocation is logged the moment it's made. Log in
-                  anytime and see exactly what you own, and at what price —
-                  visible only to you.
+                  anytime and see exactly what you own, and at what price.
                 </p>
               </div>
             </div>
+          </div>
+
+          <div class="lp-collage" aria-hidden="true">
+            <div class="lp-collage-col">
+              <div class="lp-collage-img tall">
+                <img
+                  src="assets/landing/foundation-1.jpg"
+                  alt=""
+                  width="320"
+                  height="400"
+                />
+              </div>
+              <div class="lp-collage-img square">
+                <img
+                  src="assets/landing/foundation-2.jpg"
+                  alt=""
+                  width="320"
+                  height="320"
+                />
+              </div>
+            </div>
+            <div class="lp-collage-col">
+              <div class="lp-collage-img square">
+                <img
+                  src="assets/landing/foundation-3.jpg"
+                  alt=""
+                  width="320"
+                  height="320"
+                />
+              </div>
+              <div class="lp-collage-img tall">
+                <img
+                  src="assets/landing/foundation-4.jpg"
+                  alt=""
+                  width="320"
+                  height="400"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lp-own auth-logged-out" data-show="block">
+        <div class="lp-own-card">
+          <div class="lp-own-deco" aria-hidden="true">
+            <img
+              src="assets/landing/cta-grid.svg"
+              alt=""
+              width="225"
+              height="225"
+            />
+          </div>
+          <div class="lp-own-copy">
+            <p class="lp-label">Already own sqm?</p>
+            <h2 class="lp-title">Log in to see exactly what you own.</h2>
+            <p>
+              Your dashboard shows every plot you own, what you paid for each
+              portion, and how close you are to a full plot — or request a
+              sell-back at today's rate.
+            </p>
+          </div>
+          <div class="lp-own-actions">
+            <a href="login.html" class="btn btn-orange btn-sm">Log In</a>
+            <a href="sell.html" class="btn btn-outline-green">Sell Back Sqm</a>
           </div>
         </div>
       </section>
@@ -327,16 +551,61 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-          <span
-            >© 2026 One Square Meter Initiative — powered by
-            <span class="font-anton">Leisure Court</span></span
-          >
+        <div class="lp-footer-grid">
+          <div class="lp-footer-brand">
+            <img
+              src="assets/landing/logo-mark.png"
+              alt="One Square Metre Initiative"
+            />
+            <p>
+              The One Square Metre Initiative is revolutionizing real estate
+              access by providing a secure, transparent, and fractionalized way
+              to own high-value land in Nigeria's most promising locations.
+            </p>
+            <div class="lp-social">
+              <a href="#" aria-label="X (Twitter)">
+                <img
+                  src="assets/landing/icon-x.svg"
+                  alt=""
+                  width="12"
+                  height="12"
+                />
+              </a>
+              <a href="#" aria-label="Instagram">
+                <img
+                  src="assets/landing/icon-ig.svg"
+                  alt=""
+                  width="12"
+                  height="12"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="lp-footer-col">
+            <h4>Explore</h4>
+            <a href="buy.html">Available Plots</a>
+            <a href="#process">How it Works</a>
+            <a href="about.html">Investment Guide</a>
+            <a href="sell.html">Sell-Back Policy</a>
+          </div>
+          <div class="lp-footer-col">
+            <h4>Legal</h4>
+            <a href="about.html">Terms of Service</a>
+            <a href="about.html">Privacy Policy</a>
+            <a href="about.html">Risk Disclosure</a>
+            <a href="about.html">Contact Support</a>
+          </div>
         </div>
-        <div class="footer-links">
-          <a href="about.html">About &amp; Contact</a>
-          <a href="login.html">Log In</a>
+        <div class="lp-footer-bottom">
+          <p>
+            © 2026 One Square Metre Initiative. All rights reserved. Registered
+            with regulatory authorities for real estate investment compliance.
+            Powered by <strong class="font-anton">Leisure Court</strong>.
+          </p>
+          <div class="lp-footer-bottom-links">
+            <a href="login.html">Log In</a>
+            <a href="about.html">About &amp; Contact</a>
+          </div>
         </div>
       </div>
     </footer>
@@ -345,5 +614,9 @@
     <script src="js/site-config.js"></script>
     <script src="js/site-api.js"></script>
     <script src="js/site-auth.js"></script>
+    <script src="js/landing-plot.js"></script>
+    <script src="js/landing-story.js"></script>
+    <script src="js/landing-claim.js"></script>
+    <script src="js/landing-iso.js"></script>
   </body>
 </html>
