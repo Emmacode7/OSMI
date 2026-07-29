@@ -20,6 +20,7 @@
   --gold:#e8b923;
   --gold-bright:#f5cd47;
   --orange:#f2941c;
+  --orange-dark:#c76f00;
   --teal:#2f7a94;
   --rust:#a8503a;
   --plum:#7d5ba6;
@@ -79,7 +80,7 @@ img{max-width:100%;display:block;}
 .powered-by{display:flex;align-items:center;gap:8px;margin-left:6px;padding-left:16px;border-left:1px solid var(--panel-border);}
 .powered-by .pb-label{font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;line-height:1.2;}
 .powered-by .pb-brand{display:flex;align-items:center;gap:5px;}
-.powered-by img{height:30px;width:auto;}
+.powered-by img{height: 40px;width:80%;}
 @media (max-width:700px){ .powered-by{display:none;} }
 
 .nav-links{display:flex;gap:26px;align-items:center;}
@@ -150,14 +151,13 @@ img{max-width:100%;display:block;}
 .footer-links a:hover{color:var(--ink);}
 
 /* ---------- hero ---------- */
-.hero{min-height: 100vh;
+.hero{height: 80vh;
 /* Green overlay + background image */
     background:
         linear-gradient(
             rgba(151, 255, 142, 0.65),
             rgba(255, 255, 255, 0.65)
-        ),
-        url("../assets/poster.png");
+        ), url("../assets/poster.png");
 
     background-size: cover;
     background-position: center;
@@ -171,7 +171,7 @@ img{max-width:100%;display:block;}
   opacity:0.09;pointer-events:none;z-index:0;
 }
 .hero-content {
-    max-width: 650px;
+    width: 100%;
     padding: 0 8%;
 }
 .hero .hero-content .container{position:relative;z-index:1;}
@@ -194,8 +194,8 @@ img{max-width:100%;display:block;}
 }
 .btn-primary{background:var(--green);color:#fff;}
 .btn-primary:hover{background:var(--green-dark);}
-.btn-secondary{background:transparent;border-color:var(--orange);color:var(--orange);}
-.btn-secondary:hover{background:var(--orange);color:#fff;}
+.btn-secondary{background-color:var(--orange);border-color:var(--orange);color:var(--bg);}
+.btn-secondary:hover{background:var(--orange-dark);color:#fff;}
 
 /* ---------- panels / cards ---------- */
 .panel{background:var(--bg-panel);border:1px solid var(--panel-border);border-radius:var(--radius);padding:22px;box-shadow:0 1px 2px rgba(20,60,40,0.03);}
