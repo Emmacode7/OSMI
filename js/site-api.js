@@ -14,6 +14,7 @@ const OsmiApi = {
   async getPlotNames() {
     const res = await fetch(OSMI_CONFIG.API_URL);
     return res.json();
+    loadMarketPlots();
   },
 
   async getPlotDetail(query) {

@@ -7,6 +7,7 @@
 <link rel="icon" href="assets/osmi-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
@@ -64,11 +65,16 @@
       <input id="email" type="email" autocomplete="email" />
 
       <label for="password">Password</label>
-      <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+      <div class="password-field">
+        <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" /> 
+        <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+      </div>
 
       <label for="confirmPassword">Confirm password</label>
-      <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" />
-
+      <div class="password-field">
+        <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" /> 
+        <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+      </div>
       <button class="btn-block" id="signupBtn" type="button">Sign Up</button>
       <div class="hint">If you've bought sqm before under this email, signing up connects your new password to that existing record — you won't lose anything.</div>
       <div class="status" id="statusBox"></div>

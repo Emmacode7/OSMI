@@ -199,7 +199,6 @@ img{max-width:100%;display:block;}
 
 /* ---------- panels / cards ---------- */
 .panel{background:var(--bg-panel);border:1px solid var(--panel-border);border-radius:var(--radius);padding:22px;box-shadow:0 1px 2px rgba(20,60,40,0.03);}
-.panel + .panel{margin-top:16px;}
 .panel h2, .panel h3{margin-top:0;}
 .card-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:18px;}
 @media (max-width:860px){ .card-grid{grid-template-columns:1fr;} }
@@ -294,3 +293,87 @@ button.btn-block:disabled{opacity:0.5;cursor:not-allowed;}
 .myplot-card .mp-id{font-family:'IBM Plex Mono', monospace;font-size:11px;color:var(--ink-faint);}
 .progress-track{width:100%;height:7px;border-radius:4px;background:rgba(30,60,45,0.08);overflow:hidden;margin-top:8px;}
 .progress-fill{height:100%;background:var(--green);border-radius:4px;}
+
+.password-field {position: relative;}
+.password-field input {width: 100%; padding-right: 48px;}
+.toggle-password {position: absolute; right: 14px; top: 50%; transform: translateY(-50%); border: none; background: transparent; cursor: pointer; font-size: 18px; color: #777; padding: 0;}
+.toggle-password:hover {color: #111;}
+.toggle-password::after {border-color: none;}
+
+.market-section{
+    margin-top:48px;
+}
+
+.plots-market-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:24px;
+}
+
+.market-plot-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:22px;
+    transition:.25s;
+    cursor:pointer;
+}
+
+.market-plot-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+}
+
+.market-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.market-head h3{
+    margin:0;
+}
+
+.market-price{
+    color:#198754;
+    font-weight:700;
+}
+
+.market-chart{
+    height:220px;
+    margin:20px 0;
+}
+
+.market-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:16px;
+}
+
+.market-stat{
+    background:#f8f9fa;
+    border-radius:10px;
+    padding:12px;
+}
+
+.market-stat span{
+    display:block;
+    font-size:12px;
+    color:#777;
+}
+
+.market-stat strong{
+    font-size:16px;
+}
+
+.market-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.market-actions .btn{
+    flex:1;
+}

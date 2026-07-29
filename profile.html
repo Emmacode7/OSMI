@@ -7,6 +7,7 @@
 <link rel="icon" href="assets/osmi-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
@@ -74,13 +75,22 @@
     <div class="panel">
       <div class="section-sublabel">Change password</div>
       <label for="currentPassword">Current password</label>
-      <input id="currentPassword" type="password" autocomplete="current-password" />
+      <div class="password-field">
+        <input id="currentPassword" type="password" autocomplete="current-password" /> 
+        <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+      </div>
 
       <label for="newPassword">New password</label>
-      <input id="newPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+      <div class="password-field">
+        <input id="newPassword" type="password" placeholder="At least 6 characters" autocomplete="new-password" /> 
+        <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+      </div>
 
       <label for="confirmNewPassword">Confirm new password</label>
-      <input id="confirmNewPassword" type="password" autocomplete="new-password" />
+      <div class="password-field">
+        <input id="confirmNewPassword" type="password" autocomplete="new-password" /> 
+        <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
+      </div>
 
       <button class="btn-block" id="changePasswordBtn" type="button">Change Password</button>
       <div class="hint">You'll be logged out everywhere after changing your password, as a security precaution.</div>
