@@ -1,220 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sell Back Sqm — One Square Meter Initiative</title>
-<link rel="icon" href="assets/osmi-logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sell Back Sqm — One Square Meter Initiative</title>
+    <link rel="icon" href="assets/osmi-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap"
+      rel="stylesheet"/>
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/landing.css" />
+  </head>
+  <body class="page-landing">
+    <header class="site-header">
+      <div class="nav-inner">
+        <div style="display: flex; align-items: center">
+          <a class="brand" href="index.html">
+            <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          </a>
+          <div class="powered-by">
+            <div>
+              <div class="pb-label">Powered by</div>
+              <div class="pb-brand">
+                <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          ☰
+        </button>
+        <nav class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="buy.html">Buy</a>
+          <a href="sell.html" class="active">Sell Back</a>
+          <a href="about.html">About &amp; Contact</a>
+          <a href="login.html" class="auth-logged-out" data-show="inline-block"
+            >Log In</a
+          >
+          <a
+            href="signup.html"
+            class="auth-logged-out nav-cta"
+            data-show="inline-block"
+            >Sign Up</a
+          >
+          <div
+            class="nav-account auth-logged-in"
+            id="navAccount"
+            data-show="inline-block"
+          >
+            <button
+              type="button"
+              class="nav-account-trigger"
+              id="navAccountTrigger"
+            >
+              <span class="auth-buyer-name">Account</span>
+              <span class="caret">▾</span>
+            </button>
+            <div class="nav-account-menu" id="navAccountMenu">
+              <a href="dashboard.html">My Plots</a>
+              <a href="profile.html">Profile</a>
+              <a href="#" id="navLogoutBtn">Log Out</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
 
-<header class="site-header">
-  <div class="nav-inner">
-    <div style="display:flex;align-items:center;">
-      <a class="brand" href="index.html">
-        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      </a>
-      <div class="powered-by">
-        <div>
-          <div class="pb-label">Powered by</div>
-          <div class="pb-brand">
-            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+    <main class="section-tight">
+      <div class="container" style="max-width: 520px">
+        <div class="section-label">Sell back</div>
+        <h2 class="section-title">Sell back sqm</h2>
+        <p
+          style="
+            color: var(--ink-dim);
+            font-size: 14px;
+            margin-top: -6px;
+            margin-bottom: 20px;
+          "
+        >
+          We'll pay out at today's rate per sqm, not what you originally paid.
+          Our staff will process the transfer to the account below.
+        </p>
+
+        <div class="panel">
+          <div class="section-sublabel">Selling as</div>
+          <div
+            id="buyerIdentity"
+            style="
+              font-family: &quot;IBM Plex Sans&quot;, sans-serif;
+              font-size: 13.5px;
+              color: var(--ink);
+              margin-top: 6px;
+            "
+          >
+            Loading…
+          </div>
+        </div>
+
+        <div id="verifyBanner"></div>
+
+        <div class="panel">
+          <label for="plotSelect">Plot</label>
+          <select id="plotSelect">
+            <option value="">Loading your plots…</option>
+          </select>
+          <div class="hint" id="ownedHint"></div>
+
+          <label for="sqmInput">Sqm to sell back</label>
+          <input id="sqmInput" type="number" min="1" />
+
+          <hr class="section-divider" />
+          <div class="section-sublabel">Payout bank details</div>
+
+          <label for="bankName">Bank name</label>
+          <input id="bankName" type="text" />
+
+          <label for="accountNumber">Account number</label>
+          <input id="accountNumber" type="number" min="1" />
+
+          <label for="accountName">Account name</label>
+          <input id="accountName" type="text" />
+
+          <button id="submitBtn" class="btn-block" type="button">
+            Submit sell-back request
+          </button>
+          <div class="hint">
+            This doesn't move any money automatically — our staff review every
+            request and send the payout to the account above.
+          </div>
+          <div class="status" id="statusBox"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="lp-footer-grid">
+          <div class="lp-footer-brand">
+            <img
+              src="assets/landing/logo-mark.png"
+              alt="One Square Metre Initiative"
+            />
+            <p>
+              The One Square Metre Initiative is revolutionizing real estate
+              access by providing a secure, transparent, and fractionalized way
+              to own high-value land in Nigeria's most promising locations.
+            </p>
+            <div class="lp-social">
+              <a href="#" aria-label="X (Twitter)">
+                <img
+                  src="assets/landing/icon-x.svg"
+                  alt=""
+                  width="12"
+                  height="12"
+                />
+              </a>
+              <a href="#" aria-label="Instagram">
+                <img
+                  src="assets/landing/icon-ig.svg"
+                  alt=""
+                  width="12"
+                  height="12"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="lp-footer-col">
+            <h4>Explore</h4>
+            <a href="buy.html">Available Plots</a>
+            <a href="#process">How it Works</a>
+            <a href="about.html">Investment Guide</a>
+            <a href="sell.html">Sell-Back Policy</a>
+          </div>
+          <div class="lp-footer-col">
+            <h4>Legal</h4>
+            <a href="about.html">Terms of Service</a>
+            <a href="about.html">Privacy Policy</a>
+            <a href="about.html">Risk Disclosure</a>
+            <a href="about.html">Contact Support</a>
+          </div>
+        </div>
+        <div class="lp-footer-bottom">
+          <p>
+            © 2026 One Square Metre Initiative. All rights reserved. Registered
+            with regulatory authorities for real estate investment compliance.
+            Powered by <strong class="font-anton">Leisure Court</strong>.
+          </p>
+          <div class="lp-footer-bottom-links">
+            <a href="login.html">Log In</a>
+            <a href="about.html">About &amp; Contact</a>
           </div>
         </div>
       </div>
-    </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="buy.html">Buy</a>
-      <a href="sell.html" class="active">Sell Back</a>
-      <a href="about.html">About &amp; Contact</a>
-      <a href="login.html" class="auth-logged-out" data-show="inline-block">Log In</a>
-      <a href="signup.html" class="auth-logged-out nav-cta" data-show="inline-block">Sign Up</a>
-      <div class="nav-account auth-logged-in" id="navAccount" data-show="inline-block">
-        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
-          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
-        </button>
-        <div class="nav-account-menu" id="navAccountMenu">
-          <a href="dashboard.html">My Plots</a>
-          <a href="profile.html">Profile</a>
-          <a href="#" id="navLogoutBtn">Log Out</a>
-        </div>
-      </div>
-    </nav>
-  </div>
-</header>
+    </footer>
 
-<main class="section-tight">
-  <div class="container" style="max-width:520px;">
-    <div class="section-label">Sell back</div>
-    <h2 class="section-title">Sell back sqm</h2>
-    <p style="color:var(--ink-dim); font-size:14px; margin-top:-6px; margin-bottom:20px;">We'll pay out at today's rate per sqm, not what you originally paid. Our staff will process the transfer to the account below.</p>
+    <script src="js/site-config.js"></script>
+    <script src="js/site-api.js"></script>
+    <script src="js/site-nav.js"></script>
+    <script src="js/site-auth.js"></script>
+    <script>
+      (function () {
+        OsmiAuth.requireLogin();
 
-    <div class="panel">
-      <div class="section-sublabel">Selling as</div>
-      <div id="buyerIdentity" style="font-family:'IBM Plex Sans', sans-serif; font-size:13.5px; color:var(--ink); margin-top:6px;">Loading…</div>
-    </div>
+        const el = (id) => document.getElementById(id);
+        const buyer = OsmiAuth.getBuyer();
 
-    <div id="verifyBanner"></div>
+        if (buyer) {
+          el("buyerIdentity").textContent = buyer.name + " — " + buyer.email;
+        }
+        OsmiAuth.renderVerificationBanner("verifyBanner");
 
-    <div class="panel">
-      <label for="plotSelect">Plot</label>
-      <select id="plotSelect"><option value="">Loading your plots…</option></select>
-      <div class="hint" id="ownedHint"></div>
+        function showStatus(kind, text) {
+          const box = el("statusBox");
+          box.className = "status show " + kind;
+          box.textContent = text;
+        }
+        function clearStatus() {
+          const box = el("statusBox");
+          box.className = "status";
+          box.textContent = "";
+        }
+        function formatNaira(n) {
+          return "₦" + Number(n).toLocaleString("en-NG");
+        }
 
-      <label for="sqmInput">Sqm to sell back</label>
-      <input id="sqmInput" type="number" min="1" />
+        let myPlots = [];
 
-      <hr class="section-divider" />
-      <div class="section-sublabel">Payout bank details</div>
+        function selectedPlot() {
+          const plotId = el("plotSelect").value;
+          return myPlots.find((p) => String(p.plotId) === plotId);
+        }
 
-      <label for="bankName">Bank name</label>
-      <input id="bankName" type="text" />
+        function updateOwnedHint() {
+          const plot = selectedPlot();
+          const hint = el("ownedHint");
+          if (plot) {
+            hint.textContent = "You own " + plot.mySqm + " sqm on this plot.";
+            el("sqmInput").max = plot.mySqm;
+          } else {
+            hint.textContent = "";
+          }
+        }
 
-      <label for="accountNumber">Account number</label>
-      <input id="accountNumber" type="number" min="1" />
+        OsmiApi.getMyPlots(OsmiAuth.getToken())
+          .then(function (result) {
+            const select = el("plotSelect");
+            select.innerHTML = "";
+            if (!result || !result.success) {
+              select.innerHTML =
+                '<option value="">Could not load your plots</option>';
+              return;
+            }
+            myPlots = result.plots || [];
+            if (myPlots.length === 0) {
+              select.innerHTML =
+                '<option value="">You don\u2019t own any sqm yet</option>';
+              showStatus(
+                "pending",
+                "You don\u2019t own any sqm yet, so there\u2019s nothing to sell back. Head to Buy to get started.",
+              );
+              el("submitBtn").disabled = true;
+              return;
+            }
+            myPlots.forEach((p) => {
+              const opt = document.createElement("option");
+              opt.value = p.plotId;
+              opt.textContent = p.plotName + " (" + p.mySqm + " sqm owned)";
+              select.appendChild(opt);
+            });
+            updateOwnedHint();
+          })
+          .catch(function () {
+            el("plotSelect").innerHTML =
+              '<option value="">Could not load your plots</option>';
+          });
 
-      <label for="accountName">Account name</label>
-      <input id="accountName" type="text" />
+        el("plotSelect").addEventListener("change", updateOwnedHint);
 
-      <button id="submitBtn" class="btn-block" type="button">Submit sell-back request</button>
-      <div class="hint">This doesn't move any money automatically — our staff review every request and send the payout to the account above.</div>
-      <div class="status" id="statusBox"></div>
-    </div>
-  </div>
-</main>
+        el("submitBtn").addEventListener("click", async () => {
+          clearStatus();
+          const plot = selectedPlot();
+          const sqmToSellBack = Number(el("sqmInput").value);
+          const bankName = el("bankName").value.trim();
+          const accountNumber = el("accountNumber").value.trim();
+          const accountName = el("accountName").value.trim();
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      <span>© 2026 One Square Meter Initiative — powered by <span class="font-anton">Leisure Court</span></span>
-    </div>
-    <div class="footer-links">
-      <a href="about.html">About &amp; Contact</a>
-      <a href="dashboard.html">My Plots</a>
-    </div>
-  </div>
-</footer>
+          if (!plot || !bankName || !accountNumber || !accountName) {
+            showStatus("error", "Please fill in all fields.");
+            return;
+          }
+          if (!sqmToSellBack || sqmToSellBack <= 0) {
+            showStatus("error", "Enter a valid sqm amount.");
+            return;
+          }
+          if (sqmToSellBack > plot.mySqm) {
+            showStatus(
+              "error",
+              "You only own " + plot.mySqm + " sqm on this plot.",
+            );
+            return;
+          }
 
-<script src="js/site-config.js"></script>
-<script src="js/site-api.js"></script>
-<script src="js/site-nav.js"></script>
-<script src="js/site-auth.js"></script>
-<script>
-(function(){
-  OsmiAuth.requireLogin();
+          el("submitBtn").disabled = true;
+          showStatus("pending", "Submitting your request…");
 
-  const el = (id) => document.getElementById(id);
-  const buyer = OsmiAuth.getBuyer();
-
-  if (buyer){
-    el('buyerIdentity').textContent = buyer.name + ' — ' + buyer.email;
-  }
-  OsmiAuth.renderVerificationBanner('verifyBanner');
-
-  function showStatus(kind, text){
-    const box = el('statusBox');
-    box.className = 'status show ' + kind;
-    box.textContent = text;
-  }
-  function clearStatus(){
-    const box = el('statusBox');
-    box.className = 'status';
-    box.textContent = '';
-  }
-  function formatNaira(n){ return '₦' + Number(n).toLocaleString('en-NG'); }
-
-  let myPlots = [];
-
-  function selectedPlot(){
-    const plotId = el('plotSelect').value;
-    return myPlots.find(p => String(p.plotId) === plotId);
-  }
-
-  function updateOwnedHint(){
-    const plot = selectedPlot();
-    const hint = el('ownedHint');
-    if (plot){
-      hint.textContent = 'You own ' + plot.mySqm + ' sqm on this plot.';
-      el('sqmInput').max = plot.mySqm;
-    } else {
-      hint.textContent = '';
-    }
-  }
-
-  OsmiApi.getMyPlots(OsmiAuth.getToken()).then(function(result){
-    const select = el('plotSelect');
-    select.innerHTML = '';
-    if (!result || !result.success){
-      select.innerHTML = '<option value="">Could not load your plots</option>';
-      return;
-    }
-    myPlots = result.plots || [];
-    if (myPlots.length === 0){
-      select.innerHTML = '<option value="">You don\u2019t own any sqm yet</option>';
-      showStatus('pending', 'You don\u2019t own any sqm yet, so there\u2019s nothing to sell back. Head to Buy to get started.');
-      el('submitBtn').disabled = true;
-      return;
-    }
-    myPlots.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.plotId;
-      opt.textContent = p.plotName + ' (' + p.mySqm + ' sqm owned)';
-      select.appendChild(opt);
-    });
-    updateOwnedHint();
-  }).catch(function(){
-    el('plotSelect').innerHTML = '<option value="">Could not load your plots</option>';
-  });
-
-  el('plotSelect').addEventListener('change', updateOwnedHint);
-
-  el('submitBtn').addEventListener('click', async () => {
-    clearStatus();
-    const plot = selectedPlot();
-    const sqmToSellBack = Number(el('sqmInput').value);
-    const bankName = el('bankName').value.trim();
-    const accountNumber = el('accountNumber').value.trim();
-    const accountName = el('accountName').value.trim();
-
-    if (!plot || !bankName || !accountNumber || !accountName){
-      showStatus('error', 'Please fill in all fields.');
-      return;
-    }
-    if (!sqmToSellBack || sqmToSellBack <= 0){
-      showStatus('error', 'Enter a valid sqm amount.');
-      return;
-    }
-    if (sqmToSellBack > plot.mySqm){
-      showStatus('error', 'You only own ' + plot.mySqm + ' sqm on this plot.');
-      return;
-    }
-
-    el('submitBtn').disabled = true;
-    showStatus('pending', 'Submitting your request…');
-
-    try {
-      const result = await OsmiApi.submitSellback({
-        token: OsmiAuth.getToken(),
-        plotName: plot.plotName, sqmToSellBack, bankName, accountNumber, accountName
-      });
-      el('submitBtn').disabled = false;
-      if (result && result.success){
-        showStatus('ok', 'Request recorded (reference ' + result.buybackId + '). At today\u2019s rate, that\u2019s worth ' + formatNaira(result.totalPayout) + '. Check your email for confirmation \u2014 our staff will process your payout shortly.');
-      } else {
-        showStatus('error', (result && result.reason) ? result.reason : (result && result.message) || 'We could not process this request. Please check the details and try again.');
-      }
-    } catch (err) {
-      el('submitBtn').disabled = false;
-      showStatus('error', 'Something went wrong. Please try again.');
-    }
-  });
-})();
-</script>
-</body>
+          try {
+            const result = await OsmiApi.submitSellback({
+              token: OsmiAuth.getToken(),
+              plotName: plot.plotName,
+              sqmToSellBack,
+              bankName,
+              accountNumber,
+              accountName,
+            });
+            el("submitBtn").disabled = false;
+            if (result && result.success) {
+              showStatus(
+                "ok",
+                "Request recorded (reference " +
+                  result.buybackId +
+                  "). At today\u2019s rate, that\u2019s worth " +
+                  formatNaira(result.totalPayout) +
+                  ". Check your email for confirmation \u2014 our staff will process your payout shortly.",
+              );
+            } else {
+              showStatus(
+                "error",
+                result && result.reason
+                  ? result.reason
+                  : (result && result.message) ||
+                      "We could not process this request. Please check the details and try again.",
+              );
+            }
+          } catch (err) {
+            el("submitBtn").disabled = false;
+            showStatus("error", "Something went wrong. Please try again.");
+          }
+        });
+      })();
+    </script>
+  </body>
 </html>
