@@ -82,7 +82,7 @@
             margin-bottom: 20px;
           "
         >
-          Secure checkout powered by Paystack — pay by card, bank transfer, or
+          Secure checkout powered by Monnify — pay by card, bank transfer, or
           USSD.
         </p>
 
@@ -111,6 +111,7 @@
 
           <label for="sqmInput">Sqm to buy</label>
           <input id="sqmInput" type="number" min="5" step="5" placeholder="E.g 5, 10, 15" />
+          <p id="error" style="color:red;"></p>
 
           <div class="total-box">
             <span class="lbl">Total</span>
@@ -195,6 +196,7 @@
     <script src="js/site-nav.js"></script>
     <script src="js/site-auth.js"></script>
     <script src="js/site-chart.js"></script>
+
     <script>
       (function () {
         OsmiAuth.requireLogin();
@@ -410,6 +412,25 @@
             el("plotSelect").innerHTML =
               '<option value="">Could not load plots</option>';
           });
+          /* const input = document.getElementById("sqmInput");
+          const error = document.getElementById("error");
+
+          input.addEventListener("input", function () {
+              const value = Number(this.value);
+
+              if (value >= 5 && value % 5 === 0) {
+                  error.textContent = "";
+              } else {
+                  error.textContent = "Please enter a multiple of 5.";
+              }
+          });
+
+          const value = Number(document.getElementById("sqmInput").value);
+
+          if (value < 5 || value % 5 !== 0) {
+              alert("Please enter a multiple of 5 (5, 10, 15, 20...)");
+              return;
+          } */
       })();
     </script>
   </body>
