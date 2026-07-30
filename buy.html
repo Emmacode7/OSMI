@@ -1,93 +1,135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Buy Sqm — One Square Meter Initiative</title>
-<link rel="icon" href="assets/osmi-logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css" />
-<link rel="stylesheet" href="css/landing.css" />
-<script src="https://js.paystack.co/v1/inline.js"></script>
-</head>
-<body class="page-landing">
-
-<header class="site-header">
-  <div class="nav-inner">
-    <div style="display:flex;align-items:center;">
-      <a class="brand" href="index.html">
-        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
-      </a>
-      <div class="powered-by">
-        <div>
-          <div class="pb-label">Powered by</div>
-          <div class="pb-brand">
-            <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buy Sqm — One Square Meter Initiative</title>
+    <link rel="icon" href="assets/osmi-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/landing.css" />
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+  </head>
+  <body class="page-landing">
+    <header class="site-header">
+      <div class="nav-inner">
+        <div style="display: flex; align-items: center">
+          <a class="brand" href="index.html">
+            <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+          </a>
+          <div class="powered-by">
+            <div>
+              <div class="pb-label">Powered by</div>
+              <div class="pb-brand">
+                <img src="assets/leisure-court-logo.png" alt="Leisure Court" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="buy.html" class="active">Buy</a>
-      <a href="sell.html">Sell Back</a>
-      <a href="about.html">About &amp; Contact</a>
-      <a href="login.html" class="auth-logged-out" data-show="inline-block">Log In</a>
-      <a href="signup.html" class="auth-logged-out nav-cta" data-show="inline-block">Sign Up</a>
-      <div class="nav-account auth-logged-in" id="navAccount" data-show="inline-block">
-        <button type="button" class="nav-account-trigger" id="navAccountTrigger">
-          <span class="auth-buyer-name">Account</span> <span class="caret">▾</span>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          ☰
         </button>
-        <div class="nav-account-menu" id="navAccountMenu">
-          <a href="dashboard.html">My Plots</a>
-          <a href="profile.html">Profile</a>
-          <a href="#" id="navLogoutBtn">Log Out</a>
+        <nav class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="buy.html" class="active">Buy</a>
+          <a href="sell.html">Sell Back</a>
+          <a href="about.html">About &amp; Contact</a>
+          <a href="login.html" class="auth-logged-out" data-show="inline-block"
+            >Log In</a
+          >
+          <a
+            href="signup.html"
+            class="auth-logged-out nav-cta"
+            data-show="inline-block"
+            >Sign Up</a
+          >
+          <div
+            class="nav-account auth-logged-in"
+            id="navAccount"
+            data-show="inline-block"
+          >
+            <button
+              type="button"
+              class="nav-account-trigger"
+              id="navAccountTrigger"
+            >
+              <span class="auth-buyer-name">Account</span>
+              <span class="caret">▾</span>
+            </button>
+            <div class="nav-account-menu" id="navAccountMenu">
+              <a href="dashboard.html">My Plots</a>
+              <a href="profile.html">Profile</a>
+              <a href="#" id="navLogoutBtn">Log Out</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section-tight">
+      <div class="container" style="max-width: 520px">
+        <div class="section-label">Buy sqm</div>
+        <h2 class="section-title">Buy sqm &amp; pay now</h2>
+        <p
+          style="
+            color: var(--ink-dim);
+            font-size: 14px;
+            margin-top: -6px;
+            margin-bottom: 20px;
+          "
+        >
+          Secure checkout powered by Paystack — pay by card, bank transfer, or
+          USSD.
+        </p>
+
+        <div class="panel">
+          <div class="section-sublabel">Buying as</div>
+          <div
+            id="buyerIdentity"
+            style="
+              font-family: &quot;IBM Plex Sans&quot;, sans-serif;
+              font-size: 13.5px;
+              color: var(--ink);
+              margin-top: 6px;
+            "
+          >
+            Loading…
+          </div>
+        </div>
+
+        <div id="verifyBanner"></div>
+
+        <div class="panel">
+          <label for="plotSelect">Plot</label>
+          <select id="plotSelect">
+            <option value="">Loading plots…</option>
+          </select>
+
+          <label for="sqmInput">Sqm to buy</label>
+          <input id="sqmInput" type="number" min="5" step="5" placeholder="E.g 5, 10, 15" />
+
+          <div class="total-box">
+            <span class="lbl">Total</span>
+            <span class="amt" id="totalDisplay">—</span>
+          </div>
+
+          <button id="payBtn" class="btn-block" type="button">Pay Now</button>
+          <div class="hint" id="availabilityHint"></div>
+          <div class="status" id="statusBox"></div>
+        </div>
+
+        <div class="panel" id="priceChartPanel" style="display: none">
+          <div class="section-sublabel">Price history</div>
+          <div id="priceChartContainer" style="margin-top: 10px"></div>
         </div>
       </div>
-    </nav>
-  </div>
-</header>
+    </main>
 
-<main class="section-tight">
-  <div class="container" style="max-width:520px;">
-    <div class="section-label">Buy sqm</div>
-    <h2 class="section-title">Buy sqm &amp; pay now</h2>
-    <p style="color:var(--ink-dim); font-size:14px; margin-top:-6px; margin-bottom:20px;">Secure checkout powered by Paystack — pay by card, bank transfer, or USSD.</p>
-
-    <div class="panel">
-      <div class="section-sublabel">Buying as</div>
-      <div id="buyerIdentity" style="font-family:'IBM Plex Sans', sans-serif; font-size:13.5px; color:var(--ink); margin-top:6px;">Loading…</div>
-    </div>
-
-    <div id="verifyBanner"></div>
-
-    <div class="panel">
-      <label for="plotSelect">Plot</label>
-      <select id="plotSelect"><option value="">Loading plots…</option></select>
-
-      <label for="sqmInput">Sqm to buy</label>
-      <input id="sqmInput" type="number" min="5" placeholder="5" />
-
-      <div class="total-box">
-        <span class="lbl">Total</span>
-        <span class="amt" id="totalDisplay">—</span>
-      </div>
-
-      <button id="payBtn" class="btn-block" type="button">Pay Now</button>
-      <div class="hint" id="availabilityHint"></div>
-      <div class="status" id="statusBox"></div>
-    </div>
-
-    <div class="panel" id="priceChartPanel" style="display:none;">
-      <div class="section-sublabel">Price history</div>
-      <div id="priceChartContainer" style="margin-top:10px;"></div>
-    </div>
-  </div>
-</main>
-
-<footer class="site-footer">
+    <footer class="site-footer">
       <div class="footer-inner">
         <div class="lp-footer-grid">
           <div class="lp-footer-brand">
@@ -148,184 +190,227 @@
       </div>
     </footer>
 
-<script src="js/site-config.js"></script>
-<script src="js/site-api.js"></script>
-<script src="js/site-nav.js"></script>
-<script src="js/site-auth.js"></script>
-<script src="js/site-chart.js"></script>
-<script>
-(function(){
-  OsmiAuth.requireLogin();
+    <script src="js/site-config.js"></script>
+    <script src="js/site-api.js"></script>
+    <script src="js/site-nav.js"></script>
+    <script src="js/site-auth.js"></script>
+    <script src="js/site-chart.js"></script>
+    <script>
+      (function () {
+        OsmiAuth.requireLogin();
 
-  let plots = [];
-  const el = (id) => document.getElementById(id);
-  const buyer = OsmiAuth.getBuyer();
+        let plots = [];
+        const el = (id) => document.getElementById(id);
+        const buyer = OsmiAuth.getBuyer();
 
-  if (buyer){
-    el('buyerIdentity').textContent = buyer.name + ' — ' + buyer.email + ' — ' + buyer.phone;
-  }
-  OsmiAuth.renderVerificationBanner('verifyBanner');
+        if (buyer) {
+          el("buyerIdentity").textContent =
+            buyer.name + " — " + buyer.email + " — " + buyer.phone;
+        }
+        OsmiAuth.renderVerificationBanner("verifyBanner");
 
-  function showStatus(kind, text){
-    const box = el('statusBox');
-    box.className = 'status show ' + kind;
-    box.textContent = text;
-  }
-  function clearStatus(){
-    const box = el('statusBox');
-    box.className = 'status';
-    box.textContent = '';
-  }
-  function formatNaira(n){ return '₦' + Number(n).toLocaleString('en-NG'); }
+        function showStatus(kind, text) {
+          const box = el("statusBox");
+          box.className = "status show " + kind;
+          box.textContent = text;
+        }
+        function clearStatus() {
+          const box = el("statusBox");
+          box.className = "status";
+          box.textContent = "";
+        }
+        function formatNaira(n) {
+          return "₦" + Number(n).toLocaleString("en-NG");
+        }
 
-  function selectedPlot(){
-    const name = el('plotSelect').value;
-    return plots.find(p => p.name === name);
-  }
+        function selectedPlot() {
+          const name = el("plotSelect").value;
+          return plots.find((p) => p.name === name);
+        }
 
-  function updateTotalPreview(){
-    const plot = selectedPlot();
-    const sqm = Number(el('sqmInput').value);
-    if (!plot || !sqm || sqm < 5){
-      el('totalDisplay').textContent = '—';
-      return;
-    }
-    el('totalDisplay').textContent = formatNaira(plot.pricePerSqm * sqm);
-  }
-
-  function updateAvailabilityHint(){
-    const plot = selectedPlot();
-    el('availabilityHint').textContent = plot
-      ? plot.availableSqm + ' sqm available on this plot. Minimum purchase is 5 sqm.'
-      : 'Minimum purchase is 5 sqm.';
-  }
-
-  async function updatePriceChart(){
-    const plot = selectedPlot();
-    const panel = el('priceChartPanel');
-    if (!plot){
-      panel.style.display = 'none';
-      return;
-    }
-    panel.style.display = 'block';
-    el('priceChartContainer').innerHTML = '<div class="inspector-empty">Loading price history…</div>';
-    try{
-      const data = await OsmiApi.getPriceHistory(plot.name);
-      if (data && !data.error){
-        renderPriceChart('priceChartContainer', data);
-      } else {
-        el('priceChartContainer').innerHTML = '<div class="inspector-empty">Could not load price history.</div>';
-      }
-    } catch (err){
-      el('priceChartContainer').innerHTML = '<div class="inspector-empty">Could not load price history.</div>';
-    }
-  }
-
-  el('plotSelect').addEventListener('change', () => { updateAvailabilityHint(); updateTotalPreview(); updatePriceChart(); });
-  el('sqmInput').addEventListener('input', updateTotalPreview);
-
-  function generateReference(){
-    return 'osmi_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
-  }
-
-  el('payBtn').addEventListener('click', async () => {
-    clearStatus();
-    const plotName = el('plotSelect').value;
-    const sqm = Number(el('sqmInput').value);
-
-    if (!plotName){
-      showStatus('error', 'Please choose a plot.');
-      return;
-    }
-    if (!sqm || sqm < 5){
-      showStatus('error', 'Minimum purchase is 5 sqm.');
-      return;
-    }
-
-    el('payBtn').disabled = true;
-    showStatus('pending', 'Preparing checkout…');
-
-    try {
-      const checkout = await OsmiApi.initiateCheckout(plotName, sqm);
-      if (checkout.error){
-        el('payBtn').disabled = false;
-        showStatus('error', checkout.error);
-        return;
-      }
-      launchPaystack(checkout, { plotName, sqm });
-    } catch (err) {
-      el('payBtn').disabled = false;
-      showStatus('error', 'Could not start checkout. Please try again.');
-    }
-  });
-
-  function launchPaystack(checkout, buyerInfo){
-    showStatus('pending', 'Opening secure payment window…');
-    const reference = generateReference();
-    const token = OsmiAuth.getToken();
-
-    const handler = PaystackPop.setup({
-      key: OSMI_CONFIG.PAYSTACK_PUBLIC_KEY,
-      email: buyer.email,
-      amount: checkout.totalAmountKobo,
-      currency: OSMI_CONFIG.CURRENCY,
-      ref: reference,
-      metadata: {
-        token: token,
-        buyerEmail: buyer.email,
-        plotName: buyerInfo.plotName,
-        sqm: buyerInfo.sqm,
-        pricePerSqm: checkout.pricePerSqm
-      },
-      callback: function(response){
-        showStatus('pending', 'Payment received — confirming your allocation…');
-        OsmiApi.completePurchase({
-          token: token,
-          plotName: buyerInfo.plotName,
-          sqm: buyerInfo.sqm,
-          pricePerSqm: checkout.pricePerSqm,
-          reference: response.reference
-        }).then(function(result){
-          el('payBtn').disabled = false;
-          if (result.success){
-            showStatus('ok', result.message || 'Success! Check your email for your certificate.');
-          } else {
-            showStatus('error', result.message || 'There was a problem completing your allocation.');
+        function updateTotalPreview() {
+          const plot = selectedPlot();
+          const sqm = Number(el("sqmInput").value);
+          if (!plot || !sqm || sqm < 5) {
+            el("totalDisplay").textContent = "—";
+            return;
           }
-        }).catch(function(err){
-          el('payBtn').disabled = false;
-          showStatus('error', 'Payment was received (reference ' + response.reference + ') but confirming it failed. Please contact us with this reference.');
-        });
-      },
-      onClose: function(){
-        el('payBtn').disabled = false;
-        showStatus('error', 'Payment window closed before completing payment.');
-      }
-    });
-    handler.openIframe();
-  }
+          el("totalDisplay").textContent = formatNaira(plot.pricePerSqm * sqm);
+        }
 
-  OsmiApi.getPlotsForCheckout().then(function(list){
-    plots = list || [];
-    const select = el('plotSelect');
-    select.innerHTML = '';
-    if (plots.length === 0){
-      select.innerHTML = '<option value="">No plots available</option>';
-      return;
-    }
-    plots.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.name;
-      opt.textContent = p.name + ' — ' + formatNaira(p.pricePerSqm) + '/sqm (' + p.availableSqm + ' sqm left)';
-      select.appendChild(opt);
-    });
-    updateAvailabilityHint();
-    updateTotalPreview();
-    updatePriceChart();
-  }).catch(function(){
-    el('plotSelect').innerHTML = '<option value="">Could not load plots</option>';
-  });
-})();
-</script>
-</body>
+        function updateAvailabilityHint() {
+          const plot = selectedPlot();
+          el("availabilityHint").textContent = plot
+            ? plot.availableSqm +
+              " sqm available on this plot. Minimum purchase is 5 sqm."
+            : "Minimum purchase is 5 sqm.";
+        }
+
+        async function updatePriceChart() {
+          const plot = selectedPlot();
+          const panel = el("priceChartPanel");
+          if (!plot) {
+            panel.style.display = "none";
+            return;
+          }
+          panel.style.display = "block";
+          el("priceChartContainer").innerHTML =
+            '<div class="inspector-empty">Loading price history…</div>';
+          try {
+            const data = await OsmiApi.getPriceHistory(plot.name);
+            if (data && !data.error) {
+              renderPriceChart("priceChartContainer", data);
+            } else {
+              el("priceChartContainer").innerHTML =
+                '<div class="inspector-empty">Could not load price history.</div>';
+            }
+          } catch (err) {
+            el("priceChartContainer").innerHTML =
+              '<div class="inspector-empty">Could not load price history.</div>';
+          }
+        }
+
+        el("plotSelect").addEventListener("change", () => {
+          updateAvailabilityHint();
+          updateTotalPreview();
+          updatePriceChart();
+        });
+        el("sqmInput").addEventListener("input", updateTotalPreview);
+
+        function generateReference() {
+          return (
+            "osmi_" + Date.now() + "_" + Math.floor(Math.random() * 1000000)
+          );
+        }
+
+        el("payBtn").addEventListener("click", async () => {
+          clearStatus();
+          const plotName = el("plotSelect").value;
+          const sqm = Number(el("sqmInput").value);
+
+          if (!plotName) {
+            showStatus("error", "Please choose a plot.");
+            return;
+          }
+          if (!sqm || sqm < 5) {
+            showStatus("error", "Minimum purchase is 5 sqm.");
+            return;
+          }
+
+          el("payBtn").disabled = true;
+          showStatus("pending", "Preparing checkout…");
+
+          try {
+            const checkout = await OsmiApi.initiateCheckout(plotName, sqm);
+            if (checkout.error) {
+              el("payBtn").disabled = false;
+              showStatus("error", checkout.error);
+              return;
+            }
+            launchPaystack(checkout, { plotName, sqm });
+          } catch (err) {
+            el("payBtn").disabled = false;
+            showStatus("error", "Could not start checkout. Please try again.");
+          }
+        });
+
+        function launchPaystack(checkout, buyerInfo) {
+          showStatus("pending", "Opening secure payment window…");
+          const reference = generateReference();
+          const token = OsmiAuth.getToken();
+
+          const handler = PaystackPop.setup({
+            key: OSMI_CONFIG.PAYSTACK_PUBLIC_KEY,
+            email: buyer.email,
+            amount: checkout.totalAmountKobo,
+            currency: OSMI_CONFIG.CURRENCY,
+            ref: reference,
+            metadata: {
+              token: token,
+              buyerEmail: buyer.email,
+              plotName: buyerInfo.plotName,
+              sqm: buyerInfo.sqm,
+              pricePerSqm: checkout.pricePerSqm,
+            },
+            callback: function (response) {
+              showStatus(
+                "pending",
+                "Payment received — confirming your allocation…",
+              );
+              OsmiApi.completePurchase({
+                token: token,
+                plotName: buyerInfo.plotName,
+                sqm: buyerInfo.sqm,
+                pricePerSqm: checkout.pricePerSqm,
+                reference: response.reference,
+              })
+                .then(function (result) {
+                  el("payBtn").disabled = false;
+                  if (result.success) {
+                    showStatus(
+                      "ok",
+                      result.message ||
+                        "Success! Check your email for your certificate.",
+                    );
+                  } else {
+                    showStatus(
+                      "error",
+                      result.message ||
+                        "There was a problem completing your allocation.",
+                    );
+                  }
+                })
+                .catch(function (err) {
+                  el("payBtn").disabled = false;
+                  showStatus(
+                    "error",
+                    "Payment was received (reference " +
+                      response.reference +
+                      ") but confirming it failed. Please contact us with this reference.",
+                  );
+                });
+            },
+            onClose: function () {
+              el("payBtn").disabled = false;
+              showStatus(
+                "error",
+                "Payment window closed before completing payment.",
+              );
+            },
+          });
+          handler.openIframe();
+        }
+
+        OsmiApi.getPlotsForCheckout()
+          .then(function (list) {
+            plots = list || [];
+            const select = el("plotSelect");
+            select.innerHTML = "";
+            if (plots.length === 0) {
+              select.innerHTML = '<option value="">No plots available</option>';
+              return;
+            }
+            plots.forEach((p) => {
+              const opt = document.createElement("option");
+              opt.value = p.name;
+              opt.textContent =
+                p.name +
+                " — " +
+                formatNaira(p.pricePerSqm) +
+                "/sqm (" +
+                p.availableSqm +
+                " sqm left)";
+              select.appendChild(opt);
+            });
+            updateAvailabilityHint();
+            updateTotalPreview();
+            updatePriceChart();
+          })
+          .catch(function () {
+            el("plotSelect").innerHTML =
+              '<option value="">Could not load plots</option>';
+          });
+      })();
+    </script>
+  </body>
 </html>
