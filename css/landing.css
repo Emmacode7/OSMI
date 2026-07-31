@@ -1608,6 +1608,38 @@ body.page-landing .lp-own-actions {
   flex-shrink: 0;
 }
 
+body.page-landing .lp-brochure {
+  padding: 0 24px 64px;
+}
+
+body.page-landing .lp-brochure-card {
+  max-width: 1232px;
+  margin: 0 auto;
+  background: var(--lp-sand);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  padding: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+body.page-landing .lp-brochure-copy {
+  max-width: 672px;
+}
+
+body.page-landing .lp-brochure-copy p {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--lp-muted);
+  margin: 16px 0 0;
+}
+
+body.page-landing .lp-brochure-actions {
+  flex-shrink: 0;
+}
+
 /* ---------- footer ---------- */
 body.page-landing .site-footer {
   background: var(--lp-green);
@@ -1823,6 +1855,12 @@ body.page-landing .lp-footer-bottom-links a:hover {
   }
 
   body.page-landing .lp-own-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px;
+  }
+
+  body.page-landing .lp-brochure-card {
     flex-direction: column;
     align-items: flex-start;
     padding: 32px;

@@ -86,6 +86,15 @@
             margin-top: 8px;
           "
         ></div>
+        <section id="marketPlotsSection" class="market-section">
+          <div class="section-header">
+            <h2>Market</h2>
+            <p>Browse all available plots and their price trends.</p>
+          </div>
+
+          <div id="marketPlotsGrid" class="plots-market-grid"></div>
+        </section>
+        <div id="detailSection" style="margin-top: 28px"></div>
         <div class="lp-hero-visual" data-hero-visual="iso3d">
           <aside
               class="lp-iso"
@@ -117,15 +126,6 @@
               </div>
             </aside>
         </div>
-        <section id="marketPlotsSection" class="market-section">
-          <div class="section-header">
-            <h2>Market</h2>
-            <p>Browse all available plots and their price trends.</p>
-          </div>
-
-          <div id="marketPlotsGrid" class="plots-market-grid"></div>
-        </section>
-        <div id="detailSection" style="margin-top: 28px"></div>
       </div>
     </main>
 
@@ -194,6 +194,7 @@
     <script src="js/site-config.js"></script>
     <script src="js/site-api.js"></script>
     <script src="js/site-auth.js"></script>
+    <script src="js/site-chart.js"></script>
     <script src="js/landing-plot.js"></script>
     <script src="js/landing-story.js"></script>
     <script src="js/landing-claim.js"></script>
@@ -408,22 +409,37 @@
         }
 
         async function loadMarketPlots() {
-          const result = await OsmiApi.getPlotsForCheckout();
+          const plots = await OsmiApi.getPlotsForCheckout();
 
-          if (!result.success) return;
+          if (!Array.isArray(plots) || plots.length === 0) return;
 
           const grid = document.getElementById("marketPlotsGrid");
 
           grid.innerHTML = "";
 
-          for (const plot of result.plots) {
+          for (const plot of plots) {
             const chartId = "chart_" + plot.name.replace(/\s+/g, "_");
+
+            // getPlotsForCheckout only returns name/pricePerSqm/availableSqm —
+            // fetch totalSqm + currentPricePerSqm from the plot-detail endpoint.
+            let totalSqm = null;
+            let currentPricePerSqm = plot.pricePerSqm;
+            try {
+              const detail = await OsmiApi.getPlotDetail(plot.name);
+              if (detail && !detail.error) {
+                totalSqm = detail.totalSqm;
+                currentPricePerSqm = detail.currentPricePerSqm;
+              }
+            } catch (err) {
+              console.error(err);
+            }
 
             const available = Number(plot.availableSqm).toLocaleString();
 
-            const total = Number(plot.totalSqm).toLocaleString();
+            const total =
+              totalSqm != null ? Number(totalSqm).toLocaleString() : "—";
 
-            const price = Number(plot.currentPricePerSqm).toLocaleString();
+            const price = Number(currentPricePerSqm).toLocaleString();
 
             const card = document.createElement("div");
 

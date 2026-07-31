@@ -230,10 +230,32 @@
           return plots.find((p) => p.name === name);
         }
 
+        function isValidSqm(sqm) {
+          return Number.isFinite(sqm) && sqm > 0 && sqm % 5 === 0;
+        }
+
+        function updateSqmError() {
+          const raw = el("sqmInput").value;
+          const sqm = Number(raw);
+          const errorEl = el("error");
+          if (raw === "") {
+            errorEl.textContent = "";
+            return true;
+          }
+          if (!isValidSqm(sqm)) {
+            errorEl.textContent =
+              "Sqm can only be purchased in multiples of 5 (5, 10, 15, 20…).";
+            return false;
+          }
+          errorEl.textContent = "";
+          return true;
+        }
+
         function updateTotalPreview() {
           const plot = selectedPlot();
           const sqm = Number(el("sqmInput").value);
-          if (!plot || !sqm || sqm < 5) {
+          const valid = updateSqmError();
+          if (!plot || !valid || !isValidSqm(sqm)) {
             el("totalDisplay").textContent = "—";
             return;
           }
@@ -294,8 +316,11 @@
             showStatus("error", "Please choose a plot.");
             return;
           }
-          if (!sqm || sqm < 5) {
-            showStatus("error", "Minimum purchase is 5 sqm.");
+          if (!isValidSqm(sqm)) {
+            showStatus(
+              "error",
+              "Sqm can only be purchased in multiples of 5 (5, 10, 15, 20…).",
+            );
             return;
           }
 
@@ -404,6 +429,15 @@
                 " sqm left)";
               select.appendChild(opt);
             });
+            const requestedPlot = new URLSearchParams(
+              window.location.search,
+            ).get("plot");
+            if (
+              requestedPlot &&
+              plots.some((p) => p.name === requestedPlot)
+            ) {
+              select.value = requestedPlot;
+            }
             updateAvailabilityHint();
             updateTotalPreview();
             updatePriceChart();
@@ -412,25 +446,6 @@
             el("plotSelect").innerHTML =
               '<option value="">Could not load plots</option>';
           });
-          /* const input = document.getElementById("sqmInput");
-          const error = document.getElementById("error");
-
-          input.addEventListener("input", function () {
-              const value = Number(this.value);
-
-              if (value >= 5 && value % 5 === 0) {
-                  error.textContent = "";
-              } else {
-                  error.textContent = "Please enter a multiple of 5.";
-              }
-          });
-
-          const value = Number(document.getElementById("sqmInput").value);
-
-          if (value < 5 || value % 5 !== 0) {
-              alert("Please enter a multiple of 5 (5, 10, 15, 20...)");
-              return;
-          } */
       })();
     </script>
   </body>
