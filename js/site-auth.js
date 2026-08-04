@@ -10,6 +10,7 @@
 const OsmiAuth = {
   TOKEN_KEY: 'osmi_session_token',
   BUYER_KEY: 'osmi_session_buyer',
+  _sessionCheckPromise: null,
 
   getToken() {
     return localStorage.getItem(this.TOKEN_KEY);
@@ -31,19 +32,58 @@ const OsmiAuth = {
   setSession(token, buyer) {
     localStorage.setItem(this.TOKEN_KEY, token);
     localStorage.setItem(this.BUYER_KEY, JSON.stringify(buyer));
+    this._sessionCheckPromise = null;
   },
 
   clearSession() {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.BUYER_KEY);
+    this._sessionCheckPromise = null;
+  },
+
+  /**
+   * Validates the current token with the server — but only ONCE per page
+   * load no matter how many places ask for it (nav rendering,
+   * requireLogin, refreshBuyer, the verification banner all used to fire
+   * their own separate whoAmI() calls; now they share one in-flight
+   * request). Resolves to:
+   *   { ok: true,  buyer }  — confirmed valid session
+   *   { ok: false, buyer: null } — server explicitly says invalid/expired
+   *   { ok: 'unknown', buyer: <last cached buyer, if any> } — the check
+   *     itself failed to complete (network hiccup, slow response). This is
+   *     deliberately NOT treated the same as an explicit invalid session —
+   *     a flaky connection shouldn't force someone who was genuinely
+   *     logged in back to the login page.
+   */
+  _checkSession() {
+    if (this._sessionCheckPromise) return this._sessionCheckPromise;
+
+    const token = this.getToken();
+    if (!token) {
+      this._sessionCheckPromise = Promise.resolve({ ok: false, buyer: null });
+      return this._sessionCheckPromise;
+    }
+
+    this._sessionCheckPromise = OsmiApi.whoAmI(token).then((result) => {
+      if (result.success) {
+        localStorage.setItem(this.BUYER_KEY, JSON.stringify(result.buyer));
+        return { ok: true, buyer: result.buyer };
+      }
+      return { ok: false, buyer: null };
+    }).catch(() => {
+      return { ok: 'unknown', buyer: this.getBuyer() };
+    });
+
+    return this._sessionCheckPromise;
   },
 
   /**
    * Call at the top of any page that requires login (buy, sell, dashboard,
    * profile). Verifies the session WITH THE SERVER — not just checking that
-   * a token happens to be sitting in localStorage — so a stale or expired
-   * token gets cleared and the person is sent to log in again, instead of
-   * silently landing on a page that only fails once they try to act on it.
+   * a token happens to be sitting in localStorage — so a genuinely stale
+   * or expired token gets cleared and the person is sent to log in again.
+   * A transient network/server hiccup, however, no longer forces a logout —
+   * only an explicit "this session is invalid" response from the server does.
    */
   async requireLogin() {
     const token = this.getToken();
@@ -51,16 +91,13 @@ const OsmiAuth = {
       this._goToLogin();
       return null;
     }
-    try {
-      const result = await OsmiApi.whoAmI(token);
-      if (result.success) {
-        localStorage.setItem(this.BUYER_KEY, JSON.stringify(result.buyer));
-        return result.buyer;
-      }
-    } catch (e) { /* treat as invalid below, same as an explicit failure */ }
-    this.clearSession();
-    this._goToLogin();
-    return null;
+    const { ok, buyer } = await this._checkSession();
+    if (ok === false) {
+      this.clearSession();
+      this._goToLogin();
+      return null;
+    }
+    return buyer;
   },
 
   _goToLogin() {
@@ -81,19 +118,13 @@ const OsmiAuth = {
    * Re-fetches this buyer's current record from the server and updates the
    * local cache — used on pages that care about fresh verification status,
    * in case the person verified their email in a different tab/session
-   * since they last logged in here.
+   * since they last logged in here. Shares the same memoized check as
+   * everything else on the page.
    */
   async refreshBuyer() {
-    const token = this.getToken();
-    if (!token) return null;
-    try {
-      const result = await OsmiApi.whoAmI(token);
-      if (result.success) {
-        localStorage.setItem(this.BUYER_KEY, JSON.stringify(result.buyer));
-        return result.buyer;
-      }
-    } catch (e) { /* keep whatever's cached */ }
-    return this.getBuyer();
+    if (!this.getToken()) return null;
+    const { buyer } = await this._checkSession();
+    return buyer || this.getBuyer();
   },
 
   /**
@@ -135,38 +166,17 @@ const OsmiAuth = {
 
 /**
  * Shared nav rendering: shows Login/Sign Up when logged out, an account
- * menu (My Plots / Profile / Log Out) when logged in. Validates the
- * session WITH THE SERVER on every page load rather than just trusting
- * that a token happens to be sitting in localStorage — a stale or expired
- * token (e.g. left over from earlier testing, or past its 30-day expiry)
- * gets cleared automatically, so the nav can't get stuck in a state that
- * doesn't match reality. Expects nav links tagged with
- * class="auth-logged-out" or class="auth-logged-in", and an element with
- * id="navLogoutBtn" for the log-out action. Also fills in any element with
- * class="auth-buyer-name".
+ * menu (My Plots / Profile / Log Out) when logged in. Uses the same
+ * memoized session check as requireLogin()/refreshBuyer() — on pages that
+ * also call requireLogin() (dashboard, profile, buy, sell), this means
+ * only ONE whoAmI() request fires for the whole page load, not two.
+ * Expects nav links tagged with class="auth-logged-out" or
+ * class="auth-logged-in", and an element with id="navLogoutBtn" for the
+ * log-out action. Also fills in any element with class="auth-buyer-name".
  */
 document.addEventListener('DOMContentLoaded', async () => {
-  let loggedIn = false;
-  let buyer = null;
-
-  const token = OsmiAuth.getToken();
-  if (token) {
-    try {
-      const result = await OsmiApi.whoAmI(token);
-      if (result.success) {
-        loggedIn = true;
-        buyer = result.buyer;
-        localStorage.setItem(OsmiAuth.BUYER_KEY, JSON.stringify(buyer));
-      } else {
-        OsmiAuth.clearSession();
-      }
-    } catch (e) {
-      // Network hiccup — don't force a logged-out flash on a flaky
-      // connection; fall back to trusting the last locally cached state.
-      loggedIn = OsmiAuth.isLoggedIn();
-      buyer = OsmiAuth.getBuyer();
-    }
-  }
+  const { ok, buyer } = await OsmiAuth._checkSession();
+  const loggedIn = ok === true || (ok === 'unknown' && !!buyer);
 
   document.querySelectorAll('.auth-logged-out').forEach(el => {
     el.style.setProperty('display', loggedIn ? 'none' : (el.dataset.show || 'inline-block'), 'important');
