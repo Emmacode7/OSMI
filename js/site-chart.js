@@ -1,5 +1,5 @@
 // ============================================================
-// ONE SQUARE METER INITIATIVE — PRICE CHART
+// ONE SQUARE METRE INITIATIVE — PRICE CHART
 // ============================================================
 // A small, dependency-free "stock chart" style SVG line chart: filled
 // gradient area under the line, a current-price + percent-change header,

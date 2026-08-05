@@ -1,5 +1,5 @@
 // ============================================================
-// ONE SQUARE METER INITIATIVE — SHARED API HELPER
+// ONE SQUARE METRE INITIATIVE — SHARED API HELPER
 // ============================================================
 // Thin wrappers around fetch() calls to the Apps Script backend.
 // IMPORTANT: POST calls deliberately send a plain string body with

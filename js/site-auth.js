@@ -1,5 +1,5 @@
 // ============================================================
-// ONE SQUARE METER INITIATIVE — SHARED AUTH HELPER
+// ONE SQUARE METRE INITIATIVE — SHARED AUTH HELPER
 // ============================================================
 // Manages the logged-in session client-side. The session token and basic
 // buyer info live in localStorage — this is a real external website (not

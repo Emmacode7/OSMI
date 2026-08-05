@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Verify Email — One Square Meter Initiative</title>
+<title>Verify Email — One Square Metre Initiative</title>
 <link rel="icon" href="assets/osmi-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Anton&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
   <div class="nav-inner">
     <div style="display:flex;align-items:center;">
       <a class="brand" href="index.html">
-        <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+        <img src="assets/osmi-logo.png" alt="One Square Metre Initiative" />
       </a>
       <div class="powered-by">
         <div>
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <buttodn class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</buttodn>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="buy.html">Buy</a>
@@ -160,8 +160,9 @@
         showStatus('error', result.message || 'This link is invalid or has already been used.');
       }
     } catch (err){
-      el('pageTitle').textContent = 'Something went wrong';
-      showStatus('error', 'Could not reach the server. Please try again.');
+      el('pageTitle').textContent = 'Still checking…';
+      showStatus('pending', 'This is taking longer than expected, but your email is very likely already verified — continue to your dashboard to check, or try this link again in a moment.');
+      el('continueBtn').style.display = 'inline-flex';
     }
   }
 

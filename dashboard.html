@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Plots — One Square Meter Initiative</title>
+    <title>My Plots — One Square Metre Initiative</title>
     <link rel="icon" href="assets/osmi-logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -18,7 +18,7 @@
       <div class="nav-inner">
         <div style="display: flex; align-items: center">
           <a class="brand" href="index.html">
-            <img src="assets/osmi-logo.png" alt="One Square Meter Initiative" />
+            <img src="assets/osmi-logo.png" alt="One Square Metre Initiative" />
           </a>
           <div class="powered-by">
             <div>
@@ -86,15 +86,6 @@
             margin-top: 8px;
           "
         ></div>
-        <section id="marketPlotsSection" class="market-section">
-          <div class="section-header">
-            <h2>Market</h2>
-            <p>Browse all available plots and their price trends.</p>
-          </div>
-
-          <div id="marketPlotsGrid" class="plots-market-grid"></div>
-        </section>
-        <div id="detailSection" style="margin-top: 28px"></div>
         <div class="lp-hero-visual" data-hero-visual="iso3d">
           <aside
               class="lp-iso"
@@ -126,6 +117,15 @@
               </div>
             </aside>
         </div>
+        <section id="marketPlotsSection" class="market-section">
+          <div class="section-header">
+            <h2>Market</h2>
+            <p>Browse all available plots and their price trends.</p>
+          </div>
+
+          <div id="marketPlotsGrid" class="plots-market-grid"></div>
+        </section>
+        <div id="detailSection" style="margin-top: 28px"></div>
       </div>
     </main>
 
@@ -296,7 +296,7 @@
             el("summaryRow").innerHTML = "";
             el("plotsGrid").innerHTML =
               '<div class="panel" style="grid-column:1/-1; text-align:center;">' +
-              '<p style="color:var(--ink-dim); margin-bottom:16px;">You don\u2019t own any square meters yet.</p>' +
+              '<p style="color:var(--ink-dim); margin-bottom:16px;">You don\u2019t own any square metres yet.</p>' +
               '<a href="buy.html" class="btn btn-primary">Buy your first sqm</a>' +
               "</div>";
             return;
@@ -420,26 +420,9 @@
           for (const plot of plots) {
             const chartId = "chart_" + plot.name.replace(/\s+/g, "_");
 
-            // getPlotsForCheckout only returns name/pricePerSqm/availableSqm —
-            // fetch totalSqm + currentPricePerSqm from the plot-detail endpoint.
-            let totalSqm = null;
-            let currentPricePerSqm = plot.pricePerSqm;
-            try {
-              const detail = await OsmiApi.getPlotDetail(plot.name);
-              if (detail && !detail.error) {
-                totalSqm = detail.totalSqm;
-                currentPricePerSqm = detail.currentPricePerSqm;
-              }
-            } catch (err) {
-              console.error(err);
-            }
-
             const available = Number(plot.availableSqm).toLocaleString();
-
-            const total =
-              totalSqm != null ? Number(totalSqm).toLocaleString() : "—";
-
-            const price = Number(currentPricePerSqm).toLocaleString();
+            const total = Number(plot.totalSqm).toLocaleString();
+            const price = Number(plot.pricePerSqm).toLocaleString();
 
             const card = document.createElement("div");
 

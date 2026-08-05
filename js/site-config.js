@@ -1,5 +1,5 @@
 // ============================================================
-// ONE SQUARE METER INITIATIVE — SITE CONFIG
+// ONE SQUARE METRE INITIATIVE — SITE CONFIG
 // ============================================================
 // This is the ONLY file you need to edit to connect the site to
 // your Apps Script backend. Paste your deployed Web App /exec URL
