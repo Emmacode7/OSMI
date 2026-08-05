@@ -243,38 +243,52 @@
           }
         }
 
-        OsmiApi.getMyPlots(OsmiAuth.getToken())
-          .then(function (result) {
-            const select = el("plotSelect");
-            select.innerHTML = "";
-            if (!result || !result.success) {
-              select.innerHTML =
-                '<option value="">Could not load your plots</option>';
-              return;
+        function wait(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function loadMyPlotOptions() {
+          const select = el("plotSelect");
+          const attempts = 3;
+          let result = null;
+
+          for (let i = 0; i < attempts; i++) {
+            try {
+              result = await OsmiApi.getMyPlots(OsmiAuth.getToken());
+              if (result && result.success) break;
+            } catch (err) {
+              result = null;
             }
-            myPlots = result.plots || [];
-            if (myPlots.length === 0) {
-              select.innerHTML =
-                '<option value="">You don\u2019t own any sqm yet</option>';
-              showStatus(
-                "pending",
-                "You don\u2019t own any sqm yet, so there\u2019s nothing to sell back. Head to Buy to get started.",
-              );
-              el("submitBtn").disabled = true;
-              return;
-            }
-            myPlots.forEach((p) => {
-              const opt = document.createElement("option");
-              opt.value = p.plotId;
-              opt.textContent = p.plotName + " (" + p.mySqm + " sqm owned)";
-              select.appendChild(opt);
-            });
-            updateOwnedHint();
-          })
-          .catch(function () {
-            el("plotSelect").innerHTML =
-              '<option value="">Could not load your plots</option>';
+            if (i < attempts - 1) await wait(1200 * (i + 1));
+          }
+
+          select.innerHTML = "";
+          if (!result || !result.success) {
+            select.innerHTML =
+              '<option value="">Could not load your plots — please refresh the page</option>';
+            return;
+          }
+          myPlots = result.plots || [];
+          if (myPlots.length === 0) {
+            select.innerHTML =
+              '<option value="">You don\u2019t own any sqm yet</option>';
+            showStatus(
+              "pending",
+              "You don\u2019t own any sqm yet, so there\u2019s nothing to sell back. Head to Buy to get started.",
+            );
+            el("submitBtn").disabled = true;
+            return;
+          }
+          myPlots.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = p.plotId;
+            opt.textContent = p.plotName + " (" + p.mySqm + " sqm owned)";
+            select.appendChild(opt);
           });
+          updateOwnedHint();
+        }
+
+        loadMyPlotOptions();
 
         el("plotSelect").addEventListener("change", updateOwnedHint);
 

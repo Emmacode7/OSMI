@@ -408,44 +408,63 @@
           handler.openIframe();
         }
 
-        OsmiApi.getPlotsForCheckout()
-          .then(function (list) {
-            plots = list || [];
-            const select = el("plotSelect");
-            select.innerHTML = "";
-            if (plots.length === 0) {
-              select.innerHTML = '<option value="">No plots available</option>';
-              return;
+        function wait(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function loadPlotOptions() {
+          const select = el("plotSelect");
+          const attempts = 3;
+          let list = null;
+
+          for (let i = 0; i < attempts; i++) {
+            try {
+              list = await OsmiApi.getPlotsForCheckout();
+              if (Array.isArray(list)) break;
+            } catch (err) {
+              // fall through to retry below
             }
-            plots.forEach((p) => {
-              const opt = document.createElement("option");
-              opt.value = p.name;
-              opt.textContent =
-                p.name +
-                " — " +
-                formatNaira(p.pricePerSqm) +
-                "/sqm (" +
-                p.availableSqm +
-                " sqm left)";
-              select.appendChild(opt);
-            });
-            const requestedPlot = new URLSearchParams(
-              window.location.search,
-            ).get("plot");
-            if (
-              requestedPlot &&
-              plots.some((p) => p.name === requestedPlot)
-            ) {
-              select.value = requestedPlot;
-            }
-            updateAvailabilityHint();
-            updateTotalPreview();
-            updatePriceChart();
-          })
-          .catch(function () {
-            el("plotSelect").innerHTML =
-              '<option value="">Could not load plots</option>';
+            if (i < attempts - 1) await wait(1200 * (i + 1));
+          }
+
+          if (!Array.isArray(list)) {
+            select.innerHTML = '<option value="">Could not load plots — please refresh the page</option>';
+            return;
+          }
+
+          plots = list;
+          select.innerHTML = "";
+          if (plots.length === 0) {
+            select.innerHTML = '<option value="">No plots available</option>';
+            return;
+          }
+          plots.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = p.name;
+            opt.textContent =
+              p.name +
+              " — " +
+              formatNaira(p.pricePerSqm) +
+              "/sqm (" +
+              p.availableSqm +
+              " sqm left)";
+            select.appendChild(opt);
           });
+          const requestedPlot = new URLSearchParams(
+            window.location.search,
+          ).get("plot");
+          if (
+            requestedPlot &&
+            plots.some((p) => p.name === requestedPlot)
+          ) {
+            select.value = requestedPlot;
+          }
+          updateAvailabilityHint();
+          updateTotalPreview();
+          updatePriceChart();
+        }
+
+        loadPlotOptions();
       })();
     </script>
   </body>
