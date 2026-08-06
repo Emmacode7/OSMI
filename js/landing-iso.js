@@ -17,8 +17,8 @@
   });
   if (mode !== 'iso3d') return;
 
-  const COLS = 8;
-  const ROWS = 8;
+  const COLS = 50;
+  const ROWS = 50;
   const OWN_TARGET = 100;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
