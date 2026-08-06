@@ -19,7 +19,7 @@
 
   const COLS = 10;
   const ROWS = 10;
-  const OWN_TARGET = 20;
+  const OWN_TARGET = 15;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const taken = new Set([0, 1, 8, 9, 7, 15, 56, 57, 63, 55, 48]);
