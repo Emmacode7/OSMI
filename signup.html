@@ -76,6 +76,10 @@
         <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" /> 
         <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
       </div>
+
+      <label for="referralCode">Referral code <span style="font-weight:400; color:var(--ink-faint);">(optional)</span></label>
+      <input id="referralCode" type="text" placeholder="E.g ABC123" style="text-transform:uppercase;" />
+
       <button class="btn-block" id="signupBtn" type="button">Sign Up</button>
       <div class="hint">If you've bought sqm before under this email, signing up connects your new password to that existing record — you won't lose anything.</div>
       <div class="status" id="statusBox"></div>
@@ -165,12 +169,19 @@
     window.location.href = 'dashboard.html';
   }
 
+  // Prefill the referral code from a shared link like signup.html?ref=ABC123.
+  const prefilledRef = new URLSearchParams(window.location.search).get('ref');
+  if (prefilledRef){
+    el('referralCode').value = prefilledRef.toUpperCase();
+  }
+
   el('signupBtn').addEventListener('click', async () => {
     const name = el('name').value.trim();
     const phone = el('phone').value.trim();
     const email = el('email').value.trim();
     const password = el('password').value;
     const confirmPassword = el('confirmPassword').value;
+    const referralCode = el('referralCode').value.trim();
 
     if (!name || !phone || !email || !password || !confirmPassword){
       showStatus('error', 'Please fill in all fields.');
@@ -189,7 +200,7 @@
     showStatus('pending', 'Creating your account…');
 
     try{
-      const result = await OsmiApi.signUp({ name, phone, email, password });
+      const result = await OsmiApi.signUp({ name, phone, email, password, referralCode });
       if (result.success){
         OsmiAuth.setSession(result.token, result.buyer);
         showStatus('ok', 'Account created! Check your email to verify it. Redirecting…');

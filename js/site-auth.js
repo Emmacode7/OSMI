@@ -161,6 +161,32 @@ const OsmiAuth = {
         btn.disabled = false;
       });
     }
+  },
+
+  /**
+   * Renders a "please add a next of kin" banner into the given container if
+   * (and only if) the logged-in buyer hasn't added one yet. Call this on
+   * buy/sell pages, which the backend now rejects purchases/sell-backs on
+   * until next-of-kin details exist — this just explains why *before*
+   * someone hits that error. Unlike the verification banner, this doesn't
+   * offer an inline fix (four fields don't fit in a banner) — it links to
+   * the profile page instead. Shares the same memoized session check as
+   * renderVerificationBanner, so calling both on one page still only fires
+   * one whoAmI() request.
+   */
+  async renderNextOfKinBanner(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const buyer = await this.refreshBuyer();
+    if (!buyer || buyer.hasNextOfKin) {
+      container.innerHTML = '';
+      return;
+    }
+    container.innerHTML =
+      '<div class="status show pending" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">' +
+        '<span>Please add a next of kin to your profile before buying or selling back sqm.</span>' +
+        '<a href="profile.html" class="btn btn-secondary" style="padding:8px 14px; font-size:12.5px;">Add next of kin</a>' +
+      '</div>';
   }
 };
 

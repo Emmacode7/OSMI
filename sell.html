@@ -99,6 +99,7 @@
         </div>
 
         <div id="verifyBanner"></div>
+        <div id="nokBanner"></div>
 
         <div class="panel">
           <label for="plotSelect">Plot</label>
@@ -210,6 +211,7 @@
           el("buyerIdentity").textContent = buyer.name + " — " + buyer.email;
         }
         OsmiAuth.renderVerificationBanner("verifyBanner");
+        OsmiAuth.renderNextOfKinBanner("nokBanner");
 
         function showStatus(kind, text) {
           const box = el("statusBox");

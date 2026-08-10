@@ -98,6 +98,38 @@
       <div class="status" id="passwordStatusBox"></div>
     </div>
 
+    <div class="panel">
+      <div class="section-sublabel">Next of kin</div>
+      <div class="hint" style="margin-top:0; margin-bottom:16px;">Required before you can buy or sell back sqm — this is who we'd contact regarding your allocation if we're ever unable to reach you directly.</div>
+
+      <label for="nokName">Full name</label>
+      <input id="nokName" type="text" />
+
+      <label for="nokRelationship">Relationship</label>
+      <input id="nokRelationship" type="text" placeholder="E.g Spouse, Parent, Sibling" />
+
+      <label for="nokPhone">Phone number</label>
+      <input id="nokPhone" type="tel" />
+
+      <label for="nokEmail">Email</label>
+      <input id="nokEmail" type="email" />
+
+      <button class="btn-block" id="saveNokBtn" type="button">Save Next of Kin</button>
+      <div class="status" id="nokStatusBox"></div>
+    </div>
+
+    <div class="panel">
+      <div class="section-sublabel">Referrals</div>
+      <div class="hint" style="margin-top:0; margin-bottom:16px;">Share your code — anyone who signs up with it counts toward your referrals.</div>
+
+      <label for="referralCodeDisplay">Your referral code</label>
+      <div style="display:flex; gap:8px;">
+        <input id="referralCodeDisplay" type="text" readonly value="Loading…" style="flex:1; font-family:&quot;IBM Plex Mono&quot;, monospace; letter-spacing:2px; font-weight:600;" />
+        <button class="btn btn-secondary" id="copyReferralBtn" type="button" style="white-space:nowrap; padding:0 16px;">Copy</button>
+      </div>
+      <div class="hint" id="referredCountHint">Loading referral stats…</div>
+    </div>
+
     <div class="panel" style="text-align:center;">
       <button class="btn btn-secondary" id="logoutBtn" type="button" style="width:100%;">Log Out</button>
     </div>
@@ -250,6 +282,82 @@
       el('changePasswordBtn').disabled = false;
       showStatus('passwordStatusBox', 'error', 'Something went wrong. Please try again.');
     }
+  });
+
+  (async () => {
+    try{
+      const result = await OsmiApi.getNextOfKin(OsmiAuth.getToken());
+      if (result.success){
+        el('nokName').value = result.nextOfKin.name;
+        el('nokRelationship').value = result.nextOfKin.relationship;
+        el('nokPhone').value = result.nextOfKin.phone;
+        el('nokEmail').value = result.nextOfKin.email;
+      }
+    } catch (err){
+      // Leave the fields blank — the person can still fill them in and save.
+    }
+  })();
+
+  el('saveNokBtn').addEventListener('click', async () => {
+    const name = el('nokName').value.trim();
+    const relationship = el('nokRelationship').value.trim();
+    const phone = el('nokPhone').value.trim();
+    const email = el('nokEmail').value.trim();
+
+    if (!name || !relationship || !phone || !email){
+      showStatus('nokStatusBox', 'error', 'Please fill in all next of kin fields.');
+      return;
+    }
+
+    el('saveNokBtn').disabled = true;
+    showStatus('nokStatusBox', 'pending', 'Saving…');
+
+    try{
+      const result = await OsmiApi.updateNextOfKin({ token: OsmiAuth.getToken(), name, relationship, phone, email });
+      el('saveNokBtn').disabled = false;
+      if (result.success){
+        const current = OsmiAuth.getBuyer() || {};
+        OsmiAuth.setSession(OsmiAuth.getToken(), Object.assign({}, current, result.buyer));
+        showStatus('nokStatusBox', 'ok', 'Next of kin saved.');
+      } else {
+        showStatus('nokStatusBox', 'error', result.message || 'Could not save your next of kin.');
+      }
+    } catch (err){
+      el('saveNokBtn').disabled = false;
+      showStatus('nokStatusBox', 'error', 'Something went wrong. Please try again.');
+    }
+  });
+
+  (async () => {
+    try{
+      const result = await OsmiApi.getReferralStats(OsmiAuth.getToken());
+      if (result.success){
+        el('referralCodeDisplay').value = result.code;
+        el('referredCountHint').textContent = result.referredCount === 1
+          ? '1 person has signed up with your code so far.'
+          : result.referredCount + ' people have signed up with your code so far.';
+      } else {
+        el('referralCodeDisplay').value = '—';
+        el('referredCountHint').textContent = 'Could not load your referral code — try refreshing the page.';
+      }
+    } catch (err){
+      el('referralCodeDisplay').value = '—';
+      el('referredCountHint').textContent = 'Could not load your referral code — try refreshing the page.';
+    }
+  })();
+
+  el('copyReferralBtn').addEventListener('click', async () => {
+    const code = el('referralCodeDisplay').value;
+    if (!code || code === 'Loading…' || code === '—') return;
+    const link = window.location.origin + window.location.pathname.replace(/profile\.html$/, '') + 'signup.html?ref=' + encodeURIComponent(code);
+    const btn = el('copyReferralBtn');
+    try{
+      await navigator.clipboard.writeText(link);
+      btn.textContent = 'Copied!';
+    } catch (err){
+      btn.textContent = 'Copy failed';
+    }
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
   });
 
   el('logoutBtn').addEventListener('click', () => { OsmiAuth.logOut(); });

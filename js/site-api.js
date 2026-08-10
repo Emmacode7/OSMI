@@ -141,5 +141,29 @@ const OsmiApi = {
       body: JSON.stringify(Object.assign({ action: 'changePassword' }, payload))
     });
     return res.json();
+  },
+
+  async getNextOfKin(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getNextOfKin', token: token })
+    });
+    return res.json();
+  },
+
+  async updateNextOfKin(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'updateNextOfKin' }, payload))
+    });
+    return res.json();
+  },
+
+  async getReferralStats(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getReferralStats', token: token })
+    });
+    return res.json();
   }
 };
