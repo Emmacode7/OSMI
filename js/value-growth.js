@@ -99,11 +99,8 @@ function renderValueGrowthTracker(containerId) {
 
         '<div class="stats-bar value-growth-stats">' +
           statBlock(fmtNaira(basePrice), 'Starting price / sqm') +
-          statBlock(growthPct + '%', 'Projected annual growth') +
-          statBlock(fmtNairaPrecise(currentValue), 'Current projected value / sqm') +
-          statBlock(fmtNairaPrecise(dailyIncrease), 'Estimated daily increase') +
+          statBlock(fmtNairaPrecise(currentValue), 'Current value / sqm') +
           statBlock(fmtNaira(finalValue), 'Projected value after 365 days') +
-          statBlock(daysElapsed + ' / 365', 'Days elapsed') +
         '</div>' +
 
         '<div class="progress-track" style="margin-top:20px;"><div class="progress-fill" style="width:' + progressPercent.toFixed(1) + '%; background:var(--orange);"></div></div>' +
