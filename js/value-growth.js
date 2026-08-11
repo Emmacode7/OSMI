@@ -17,7 +17,7 @@
 const VALUE_GROWTH_CONFIG = {
   BASE_PRICE_PER_SQM: 55000,   // ← the tracker's own starting price — independent of the real plot price
   ANNUAL_GROWTH_PERCENT: 30,   // ← projected annual growth used for this illustration
-  START_DATE: '2026-08-11'     // ← YYYY-MM-DD. Change this (and the base price above) to begin a new cycle.
+  START_DATE: '2026-07-31'     // ← YYYY-MM-DD. Change this (and the base price above) to begin a new cycle.
 };
 
 function renderValueGrowthTracker(containerId) {
@@ -90,10 +90,10 @@ function renderValueGrowthTracker(containerId) {
   container.innerHTML =
     '<section class="value-growth-section">' +
       '<div class="section-header">' +
-        '<h2>Estimated Land Value Growth' +
+        '<h2>Projected Land Value Growth' +
           '<span style="display:inline-block; margin-left:10px; vertical-align:middle; font-size:10.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--orange); background:rgba(242,148,28,0.12); padding:3px 9px; border-radius:20px;">Illustrative</span>' +
         '</h2>' +
-        '<p>A projection of how land value could grow under a configured annual growth assumption — separate from actual plot pricing shown elsewhere on this page.</p>' +
+        '<p>A projection of how land value could grow under the annual growth assumption.</p>' +
       '</div>' +
       '<div class="panel value-growth-panel">' +
 
