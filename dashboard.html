@@ -408,7 +408,7 @@
               document
                 .querySelectorAll("#detailGrid .cell")
                 .forEach((c, i) => c.classList.toggle("selected", i === idx));
-              renderDetailInspector(owner, idx);
+              renderDetailInspector(owner, idx, plot.currentPricePerSqm);
             });
             grid.appendChild(cell);
           });
@@ -492,7 +492,7 @@
           }
         }
 
-        function renderDetailInspector(owner, idx) {
+        function renderDetailInspector(owner, idx, currentPricePerSqm) {
           const box = el("detailInspector");
           if (!owner) {
             box.innerHTML =
@@ -514,6 +514,9 @@
             "</span></div>" +
             '<div class="inspector-row"><span class="k">Price paid per sqm</span><span class="v">' +
             formatNaira(owner.pricePerSqm) +
+            "</span></div>" +
+            '<div class="inspector-row"><span class="k">Current price per sqm</span><span class="v">' +
+            formatNaira(currentPricePerSqm) +
             "</span></div>" +
             '<div class="inspector-row"><span class="k">Total paid for this portion</span><span class="v">' +
             formatNaira(owner.totalPaid) +
