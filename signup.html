@@ -76,8 +76,49 @@
         <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" /> 
         <button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button>
       </div>
+    </div>
 
-      <label for="referralCode">Referral code <span style="font-weight:400; color:var(--ink-faint);">(optional)</span></label>
+    <div class="panel" style="margin-top:16px;">
+      <div class="section-sublabel">Subscriber details</div>
+      <div class="hint" style="margin-top:0; margin-bottom:16px;">Required for your Application Form on file with Leisure Court Estates.</div>
+
+      <label for="gender">Gender</label>
+      <select id="gender">
+        <option value="">Select…</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <label for="maritalStatus">Marital status</label>
+      <select id="maritalStatus">
+        <option value="">Select…</option>
+        <option value="Single">Single</option>
+        <option value="Married">Married</option>
+        <option value="Divorced">Divorced</option>
+        <option value="Widowed">Widowed</option>
+      </select>
+
+      <label for="dateOfBirth">Date of birth</label>
+      <input id="dateOfBirth" type="date" />
+
+      <label for="nationality">Nationality</label>
+      <input id="nationality" type="text" />
+
+      <label for="residentialAddress">Residential address</label>
+      <input id="residentialAddress" type="text" />
+
+      <label for="city">City</label>
+      <input id="city" type="text" />
+
+      <label for="state">State</label>
+      <input id="state" type="text" />
+
+      <label for="country">Country</label>
+      <input id="country" type="text" />
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <label for="referralCode">Referral code <span id="referralCodeHint" style="font-weight:400; color:var(--ink-faint);">(optional)</span></label>
       <input id="referralCode" type="text" placeholder="E.g ABC123" style="text-transform:uppercase;" />
 
       <button class="btn-block" id="signupBtn" type="button">Sign Up</button>
@@ -172,7 +213,15 @@
   // Prefill the referral code from a shared link like signup.html?ref=ABC123.
   const prefilledRef = new URLSearchParams(window.location.search).get('ref');
   if (prefilledRef){
-    el('referralCode').value = prefilledRef.toUpperCase();
+    const refInput = el('referralCode');
+    refInput.value = prefilledRef.toUpperCase();
+    refInput.readOnly = true;
+    refInput.style.background = 'var(--bg-soft)';
+    refInput.style.color = 'var(--green-dark)';
+    refInput.style.fontWeight = '600';
+    refInput.style.cursor = 'default';
+    el('referralCodeHint').textContent = '(applied ✓)';
+    el('referralCodeHint').style.color = 'var(--ok)';
   }
 
   el('signupBtn').addEventListener('click', async () => {
@@ -183,8 +232,21 @@
     const confirmPassword = el('confirmPassword').value;
     const referralCode = el('referralCode').value.trim();
 
+    const gender = el('gender').value;
+    const maritalStatus = el('maritalStatus').value;
+    const dateOfBirth = el('dateOfBirth').value;
+    const nationality = el('nationality').value.trim();
+    const residentialAddress = el('residentialAddress').value.trim();
+    const city = el('city').value.trim();
+    const state = el('state').value.trim();
+    const country = el('country').value.trim();
+
     if (!name || !phone || !email || !password || !confirmPassword){
       showStatus('error', 'Please fill in all fields.');
+      return;
+    }
+    if (!gender || !maritalStatus || !dateOfBirth || !nationality || !residentialAddress || !city || !state || !country){
+      showStatus('error', 'Please fill in all subscriber detail fields.');
       return;
     }
     if (password.length < 6){
@@ -200,7 +262,10 @@
     showStatus('pending', 'Creating your account…');
 
     try{
-      const result = await OsmiApi.signUp({ name, phone, email, password, referralCode });
+      const result = await OsmiApi.signUp({
+        name, phone, email, password, referralCode,
+        gender, maritalStatus, dateOfBirth, nationality, residentialAddress, city, state, country
+      });
       if (result.success){
         OsmiAuth.setSession(result.token, result.buyer);
         showStatus('ok', 'Account created! Check your email to verify it. Redirecting…');

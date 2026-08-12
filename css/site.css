@@ -329,6 +329,26 @@ button.btn-block:disabled{opacity:0.5;cursor:not-allowed;}
     margin-top:48px;
 }
 
+.referral-dash-section{
+    margin-top:48px;
+}
+
+.value-growth-stats .num{
+    font-size:clamp(15px, 4.2vw, 20px);
+    overflow-wrap:break-word;
+}
+
+@media (max-width:620px){
+    .value-growth-stats .stat{
+        min-width:100%;
+        border-right:none;
+        border-bottom:1px solid var(--grid-line-strong);
+    }
+    .value-growth-stats .stat:last-child{
+        border-bottom:none;
+    }
+}
+
 .value-growth-disclaimer{
     font-style:italic;
     border-top:1px solid var(--panel-border);

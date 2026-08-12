@@ -159,6 +159,22 @@ const OsmiApi = {
     return res.json();
   },
 
+  async getSubscriberDetails(token) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'getSubscriberDetails', token: token })
+    });
+    return res.json();
+  },
+
+  async updateSubscriberDetails(payload) {
+    const res = await fetch(OSMI_CONFIG.API_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({ action: 'updateSubscriberDetails' }, payload))
+    });
+    return res.json();
+  },
+
   async getReferralStats(token) {
     const res = await fetch(OSMI_CONFIG.API_URL, {
       method: 'POST',

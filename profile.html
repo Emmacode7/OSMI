@@ -119,14 +119,64 @@
     </div>
 
     <div class="panel">
+      <div class="section-sublabel">Subscriber details</div>
+      <div class="hint" style="margin-top:0; margin-bottom:16px;">From the Application Form on file with Leisure Court Estates. If you signed up before this was added, please fill it in here.</div>
+
+      <label for="subGender">Gender</label>
+      <select id="subGender">
+        <option value="">Select…</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <label for="subMaritalStatus">Marital status</label>
+      <select id="subMaritalStatus">
+        <option value="">Select…</option>
+        <option value="Single">Single</option>
+        <option value="Married">Married</option>
+        <option value="Divorced">Divorced</option>
+        <option value="Widowed">Widowed</option>
+      </select>
+
+      <label for="subDateOfBirth">Date of birth</label>
+      <input id="subDateOfBirth" type="date" />
+
+      <label for="subNationality">Nationality</label>
+      <input id="subNationality" type="text" />
+
+      <label for="subResidentialAddress">Residential address</label>
+      <input id="subResidentialAddress" type="text" />
+
+      <label for="subCity">City</label>
+      <input id="subCity" type="text" />
+
+      <label for="subState">State</label>
+      <input id="subState" type="text" />
+
+      <label for="subCountry">Country</label>
+      <input id="subCountry" type="text" />
+
+      <button class="btn-block" id="saveSubscriberBtn" type="button">Save Subscriber Details</button>
+      <div class="status" id="subscriberStatusBox"></div>
+    </div>
+
+    <div class="panel">
       <div class="section-sublabel">Referrals</div>
-      <div class="hint" style="margin-top:0; margin-bottom:16px;">Share your code — anyone who signs up with it counts toward your referrals.</div>
+      <div class="hint" style="margin-top:0; margin-bottom:16px;">Share your code or link — anyone who signs up with it counts toward your referrals.</div>
 
       <label for="referralCodeDisplay">Your referral code</label>
       <div style="display:flex; gap:8px;">
         <input id="referralCodeDisplay" type="text" readonly value="Loading…" style="flex:1; font-family:&quot;IBM Plex Mono&quot;, monospace; letter-spacing:2px; font-weight:600;" />
-        <button class="btn btn-secondary" id="copyReferralBtn" type="button" style="white-space:nowrap; padding:0 16px;">Copy</button>
+        <button class="btn btn-secondary" id="copyReferralBtn" type="button" style="white-space:nowrap; padding:0 16px;">Copy Code</button>
       </div>
+
+      <label for="referralLinkDisplay" style="margin-top:14px;">Your referral link</label>
+      <div style="display:flex; gap:8px;">
+        <input id="referralLinkDisplay" type="text" readonly value="Loading…" style="flex:1; font-size:12px;" />
+        <button class="btn btn-secondary" id="copyReferralLinkBtn" type="button" style="white-space:nowrap; padding:0 16px;">Copy Link</button>
+      </div>
+      <div class="hint">Sharing the link is easiest — it takes them straight to sign up with your code already applied.</div>
+
       <div class="hint" id="referredCountHint">Loading referral stats…</div>
     </div>
 
@@ -330,18 +380,74 @@
 
   (async () => {
     try{
+      const result = await OsmiApi.getSubscriberDetails(OsmiAuth.getToken());
+      if (result.success){
+        el('subGender').value = result.subscriberDetails.gender;
+        el('subMaritalStatus').value = result.subscriberDetails.maritalStatus;
+        el('subDateOfBirth').value = result.subscriberDetails.dateOfBirth;
+        el('subNationality').value = result.subscriberDetails.nationality;
+        el('subResidentialAddress').value = result.subscriberDetails.residentialAddress;
+        el('subCity').value = result.subscriberDetails.city;
+        el('subState').value = result.subscriberDetails.state;
+        el('subCountry').value = result.subscriberDetails.country;
+      }
+    } catch (err){
+      // Leave the fields blank — the person can still fill them in and save.
+    }
+  })();
+
+  el('saveSubscriberBtn').addEventListener('click', async () => {
+    const gender = el('subGender').value;
+    const maritalStatus = el('subMaritalStatus').value;
+    const dateOfBirth = el('subDateOfBirth').value;
+    const nationality = el('subNationality').value.trim();
+    const residentialAddress = el('subResidentialAddress').value.trim();
+    const city = el('subCity').value.trim();
+    const state = el('subState').value.trim();
+    const country = el('subCountry').value.trim();
+
+    if (!gender || !maritalStatus || !dateOfBirth || !nationality || !residentialAddress || !city || !state || !country){
+      showStatus('subscriberStatusBox', 'error', 'Please fill in all subscriber detail fields.');
+      return;
+    }
+
+    el('saveSubscriberBtn').disabled = true;
+    showStatus('subscriberStatusBox', 'pending', 'Saving…');
+
+    try{
+      const result = await OsmiApi.updateSubscriberDetails({
+        token: OsmiAuth.getToken(), gender, maritalStatus, dateOfBirth,
+        nationality, residentialAddress, city, state, country
+      });
+      el('saveSubscriberBtn').disabled = false;
+      if (result.success){
+        showStatus('subscriberStatusBox', 'ok', 'Subscriber details saved.');
+      } else {
+        showStatus('subscriberStatusBox', 'error', result.message || 'Could not save your subscriber details.');
+      }
+    } catch (err){
+      el('saveSubscriberBtn').disabled = false;
+      showStatus('subscriberStatusBox', 'error', 'Something went wrong. Please try again.');
+    }
+  });
+
+  (async () => {
+    try{
       const result = await OsmiApi.getReferralStats(OsmiAuth.getToken());
       if (result.success){
         el('referralCodeDisplay').value = result.code;
+        el('referralLinkDisplay').value = window.location.origin + window.location.pathname.replace(/profile\.html$/, '') + 'signup.html?ref=' + encodeURIComponent(result.code);
         el('referredCountHint').textContent = result.referredCount === 1
           ? '1 person has signed up with your code so far.'
           : result.referredCount + ' people have signed up with your code so far.';
       } else {
         el('referralCodeDisplay').value = '—';
+        el('referralLinkDisplay').value = '—';
         el('referredCountHint').textContent = 'Could not load your referral code — try refreshing the page.';
       }
     } catch (err){
       el('referralCodeDisplay').value = '—';
+      el('referralLinkDisplay').value = '—';
       el('referredCountHint').textContent = 'Could not load your referral code — try refreshing the page.';
     }
   })();
@@ -349,15 +455,27 @@
   el('copyReferralBtn').addEventListener('click', async () => {
     const code = el('referralCodeDisplay').value;
     if (!code || code === 'Loading…' || code === '—') return;
-    const link = window.location.origin + window.location.pathname.replace(/profile\.html$/, '') + 'signup.html?ref=' + encodeURIComponent(code);
     const btn = el('copyReferralBtn');
+    try{
+      await navigator.clipboard.writeText(code);
+      btn.textContent = 'Copied!';
+    } catch (err){
+      btn.textContent = 'Copy failed';
+    }
+    setTimeout(() => { btn.textContent = 'Copy Code'; }, 1800);
+  });
+
+  el('copyReferralLinkBtn').addEventListener('click', async () => {
+    const link = el('referralLinkDisplay').value;
+    if (!link || link === 'Loading…' || link === '—') return;
+    const btn = el('copyReferralLinkBtn');
     try{
       await navigator.clipboard.writeText(link);
       btn.textContent = 'Copied!';
     } catch (err){
       btn.textContent = 'Copy failed';
     }
-    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+    setTimeout(() => { btn.textContent = 'Copy Link'; }, 1800);
   });
 
   el('logoutBtn').addEventListener('click', () => { OsmiAuth.logOut(); });
