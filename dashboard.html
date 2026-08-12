@@ -86,7 +86,6 @@
             margin-top: 8px;
           "
         ></div>
-        <div id="referralDashSection"></div>
         <div id="valueGrowthSection"></div>
         <section id="marketPlotsSection" class="market-section">
           <div class="section-header">
@@ -96,6 +95,7 @@
 
           <div id="marketPlotsGrid" class="plots-market-grid"></div>
         </section>
+        <div id="referralDashSection"></div>
         <div id="detailSection" style="margin-top: 28px"></div>
         <div class="lp-hero-visual" data-hero-visual="iso3d">
           <aside
@@ -292,7 +292,7 @@
           } catch (err) {
             showStatus(
               "error",
-              "Could not reach the server. Please try again.",
+              "Loading Error. Please reload the page.",
             );
           }
         }

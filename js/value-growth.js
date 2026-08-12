@@ -97,23 +97,23 @@ function renderValueGrowthTracker(containerId) {
   container.innerHTML =
     '<section class="value-growth-section">' +
       '<div class="section-header">' +
-        '<h2>Estimated Land Value Growth' +
+        '<h2>Projected Land Value Growth' +
           '<span style="display:inline-block; margin-left:10px; vertical-align:middle; font-size:10.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--orange); background:rgba(242,148,28,0.12); padding:3px 9px; border-radius:20px;">Illustrative</span>' +
         '</h2>' +
-        '<p>A projection of how land value could grow under a configured annual growth assumption — separate from actual plot pricing shown elsewhere on this page.</p>' +
+        '<p>A projection of how your land value could grow</p>' +
       '</div>' +
       '<div class="panel value-growth-panel">' +
 
         '<div class="stats-bar value-growth-stats">' +
           statBlock(null, fmtNaira(basePrice), 'Starting price / sqm') +
-          statBlock('vgCurrentValue', fmtNairaPrecise(valueOnDay(daysElapsed)), 'Projected value / sqm', ' <span style="opacity:0.7;">· drag chart ↔</span>') +
+          statBlock('vgCurrentValue', fmtNairaPrecise(valueOnDay(daysElapsed)), 'Projected value / sqm', ' <span style="opacity:0.7;">· drag chart</span>') +
           statBlock(null, fmtNaira(finalValue), 'Projected value after 365 days') +
         '</div>' +
 
         '<div class="progress-track" style="margin-top:20px;"><div class="progress-fill" id="vgProgressFill" style="width:' + (daysElapsed / 365 * 100).toFixed(1) + '%; background:var(--orange);"></div></div>' +
         '<div class="hint" id="vgProgressNote" style="margin-top:6px; text-align:right;">' + baseProgressNote + ' <a href="#" id="vgResetLink" style="display:none; color:var(--green-dark); font-weight:600;">Reset to today</a></div>' +
 
-        '<div class="hint" style="margin-top:14px; text-align:center; letter-spacing:0.02em;">↔ Drag the marker on the chart to preview any day\'s projected value</div>' +
+        '<div class="hint" style="margin-top:14px; text-align:center; letter-spacing:0.02em;">Drag the marker on the chart to preview any day\'s projected value</div>' +
 
         '<svg id="vgSvg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block; margin-top:10px;">' +
           '<defs><linearGradient id="' + gradId + '" x1="0" y1="0" x2="0" y2="1">' +

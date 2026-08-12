@@ -16,7 +16,7 @@ async function renderReferralSection(containerId) {
     '<section class="referral-dash-section">' +
       '<div class="section-header">' +
         '<h2>Refer a Friend</h2>' +
-        '<p>Share your code or link — anyone who signs up with it counts toward your referrals.</p>' +
+        '<p>Share your code or link, anyone who signs up with it counts toward your referrals.</p>' +
       '</div>' +
       '<div class="panel">' +
         '<div class="stats-bar">' +
@@ -29,7 +29,6 @@ async function renderReferralSection(containerId) {
           '<input id="refDashLinkDisplay" type="text" readonly value="Loading…" style="flex:1; font-size:12px;" />' +
           '<button class="btn btn-secondary" id="refDashCopyLinkBtn" type="button" style="white-space:nowrap; padding:0 16px;">Copy Link</button>' +
         '</div>' +
-        '<div class="hint">Sharing the link is easiest — it takes them straight to sign up with your code already applied.</div>' +
       '</div>' +
     '</section>';
 
