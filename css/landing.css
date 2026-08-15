@@ -1878,7 +1878,12 @@ body.page-landing .lp-footer-bottom-links a:hover {
   }
 
   body.page-landing .lp-hero-stats {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 16px;
+  }
+
+  body.page-landing .lp-stat-num {
+    font-size: 28px;
   }
 
   body.page-landing .lp-plot-head {
