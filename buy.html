@@ -356,6 +356,13 @@
 
         el("payBtn").addEventListener("click", async () => {
           clearStatus();
+
+          if (!buyer || !OsmiAuth.getToken()) {
+            showStatus("error", "Please log in again before buying.");
+            OsmiAuth._goToLogin();
+            return;
+          }
+
           const plotName = el("plotSelect").value;
           const sqm = Number(el("sqmInput").value);
 
