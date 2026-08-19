@@ -481,7 +481,7 @@
       const result = await OsmiApi.getReferralStats(OsmiAuth.getToken());
       if (result.success){
         el('referralCodeDisplay').value = result.code;
-        el('referralLinkDisplay').value = window.location.origin + window.location.pathname.replace(/profile\.html$/, '') + 'signup.html?ref=' + encodeURIComponent(result.code);
+        el('referralLinkDisplay').value = window.location.origin + '/signup.html?ref=' + encodeURIComponent(result.code);
         el('referredCountHint').textContent = result.referredCount === 1
           ? '1 person has signed up with your code so far.'
           : result.referredCount + ' people have signed up with your code so far.';

@@ -101,7 +101,9 @@ const OsmiAuth = {
   },
 
   _goToLogin() {
-    const here = window.location.pathname.split('/').pop() || 'index.html';
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const last = segments[segments.length - 1];
+    const here = last ? (last.endsWith('.html') ? last : last + '.html') : 'index.html';
     window.location.href = 'login.html?next=' + encodeURIComponent(here);
   },
 

@@ -42,7 +42,7 @@ async function renderReferralSection(containerId) {
     if (result.success) {
       codeEl.textContent = result.code;
       countEl.textContent = String(result.referredCount);
-      linkEl.value = window.location.origin + window.location.pathname.replace(/dashboard\.html$/, '') + 'signup.html?ref=' + encodeURIComponent(result.code);
+      linkEl.value = window.location.origin + '/signup.html?ref=' + encodeURIComponent(result.code);
     } else {
       codeEl.textContent = '—';
       linkEl.value = '—';
