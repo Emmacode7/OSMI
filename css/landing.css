@@ -1685,24 +1685,22 @@ body.page-landing .lp-social {
 }
 
 body.page-landing .lp-social a {
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  border: 1px solid rgba(230, 225, 225, 0.2);
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 body.page-landing .lp-social a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.1);
 }
 
 body.page-landing .lp-social img {
-  width: 12px;
-  height: 12px;
+  width: 36px;
+  height: 36px;
 }
 
 body.page-landing .lp-footer-col h4 {
