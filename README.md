@@ -6,7 +6,7 @@ Live site: [onesquaremetre.leisurecourt.ng](https://onesquaremetre.leisurecourt.
 
 ## What this is
 
-A static HTML/CSS/JS site, no build step, no framework, no bundler. Hosted on Netlify, which auto-deploys on every push to this repo. Every page talks to a separate backend service over a single JSON API — see [Backend connection](#backend-connection) below.
+A static HTML/CSS/JS site, no build step, no framework, no bundler. Hosted on Cloudfare, which auto-deploys on every push to this repo. Every page talks to a separate backend service over a single JSON API — see [Backend connection](#backend-connection) below.
 
 ## Project structure
 
